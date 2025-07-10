@@ -1,16 +1,13 @@
-// src/app/api/views/[id]/route.ts
 import { NextResponse } from 'next/server';
 import { client } from '@/libs/client';
 
-export async function GET(req: Request, context: { params: { id: string } }) {
+export async function POST(_: Request, context: { params: { id: string } }) {
   const { id } = context.params;
 
   try {
-    // 現在のviewCountを取得
     const image = await client.get({ endpoint: 'images', contentId: id });
     const currentCount = image.viewCount || 0;
 
-    // +1して更新
     await client.update({
       endpoint: 'images',
       contentId: id,
