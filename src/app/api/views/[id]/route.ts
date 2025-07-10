@@ -2,7 +2,7 @@
 import { NextResponse } from 'next/server';
 import { client } from '@/libs/client';
 
-export async function POST(_: Request, context: { params: { id: string } }) {
+export async function GET(req: Request, context: { params: { id: string } }) {
   const { id } = context.params;
 
   try {
