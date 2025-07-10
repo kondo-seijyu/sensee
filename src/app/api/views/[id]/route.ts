@@ -1,11 +1,17 @@
 import { NextResponse } from 'next/server';
 import { client } from '@/libs/client';
 
-export async function POST(req: Request, context: { params: { id: string } }) {
-  const { id } = context.params;
+export async function POST(
+  request: Request,
+  context: { params: Promise<{ id: string }> }
+) {
+  const { id } = await context.params;
 
   try {
-    const image = await client.get({ endpoint: 'images', contentId: id });
+    const image = await client.get({
+      endpoint: 'images',
+      contentId: id,
+    });
     const currentCount = image.viewCount || 0;
 
     await client.update({
