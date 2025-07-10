@@ -2,8 +2,8 @@
 import { NextResponse } from 'next/server';
 import { client } from '@/libs/client';
 
-export async function POST(_: Request, context: { params: Promise<{ id: string }> }) {
-  const { id } = await context.params;
+export async function POST(_: Request, context: { params: { id: string } }) {
+  const { id } = context.params;
 
   try {
     // 現在のviewCountを取得
