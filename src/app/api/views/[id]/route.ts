@@ -3,9 +3,9 @@ import { client } from '@/libs/client';
 
 export async function POST(
   request: Request,
-  context: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = await context.params;
+  const { id } = await params;  // Promise を await してから取得
 
   try {
     const image = await client.get({
