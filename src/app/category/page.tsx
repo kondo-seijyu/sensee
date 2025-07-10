@@ -1,54 +1,32 @@
-import { client } from '@/libs/client';
-import Link from 'next/link';
+// src/app/category/page.tsx
+import { client } from '@/libs/client'
+import Link from 'next/link'
 
-type Image = {
-  id: string;
-  title: string;
-  description: string;
-  image: {
-    url: string;
-    height: number;
-    width: number;
-  };
-};
+type Category = {
+  id: string
+  name: string
+}
 
-export default async function CategoryPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const { id } = await params;
-
-  const category = await client.get({
+export default async function CategoryPage() {
+  const data = await client.get<{ contents: Category[] }>({
     endpoint: 'categories',
-    contentId: id,
-  });
-
-  const data = await client.get({
-    endpoint: 'images',
-    queries: {
-      filters: `category[equals]${id}`,
-    },
-  });
+  })
 
   return (
     <main className="p-8">
-      <h1 className="text-xl font-bold mb-4">カテゴリ: {category.name}</h1>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {data.contents.map((item: Image) => (
-          <div key={item.id} className="bg-white p-2 rounded shadow">
-            <Link href={`/images/${item.id}`}>
-              <img
-                src={item.image.url}
-                alt={item.title}
-                className="rounded-lg hover:opacity-80 transition"
-              />
+      <h1 className="text-2xl font-bold mb-6">カテゴリ一覧</h1>
+      <ul className="space-y-2">
+        {data.contents.map((category: Category) => (
+          <li key={category.id}>
+            <Link
+              href={`/category/${category.id}`}
+              className="text-blue-600 hover:underline"
+            >
+              {category.name}
             </Link>
-            <h2 className="text-sm font-semibold mt-2">{item.title}</h2>
-            <p className="text-xs text-gray-600">{item.description}</p>
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
     </main>
-  );
+  )
 }
