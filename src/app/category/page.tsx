@@ -10,28 +10,20 @@ type Image = {
     height: number;
     width: number;
   };
-  tags?: string[];
-  category?: {
-    id: string;
-    name: string;
-  };
-  usage?: string;
 };
 
-type PageProps = {
-  params: { id: string };
-};
+export default async function CategoryPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
 
-export default async function CategoryPage({ params }: PageProps) {
-  const { id } = params;
-
-  // カテゴリ名の取得
   const category = await client.get({
     endpoint: 'categories',
     contentId: id,
   });
 
-  // 画像一覧の取得
   const data = await client.get({
     endpoint: 'images',
     queries: {
@@ -42,7 +34,6 @@ export default async function CategoryPage({ params }: PageProps) {
   return (
     <main className="p-8">
       <h1 className="text-xl font-bold mb-4">カテゴリ: {category.name}</h1>
-
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {data.contents.map((item: Image) => (
           <div key={item.id} className="bg-white p-2 rounded shadow">
