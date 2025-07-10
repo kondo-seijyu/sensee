@@ -5,38 +5,23 @@ type Image = {
   id: string;
   title: string;
   description: string;
-  image: {
-    url: string;
-    width: number;
-    height: number;
-  };
+  image: { url: string; width: number; height: number };
   tags?: string[];
-  category?: {
-    id: string;
-    name: string;
-  };
+  category?: { id: string; name: string };
   usage?: string | string[];
 };
 
-type Params = {
-  params: {
-    id: string;
-  };
-};
+export default async function CategoryPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
 
-export default async function CategoryPage({ params }: Params) {
-  const { id } = params;
-
-  const category = await client.get({
-    endpoint: 'categories',
-    contentId: id,
-  });
-
+  const category = await client.get({ endpoint: 'categories', contentId: id });
   const data = await client.get({
     endpoint: 'images',
-    queries: {
-      filters: `category[equals]${id}`,
-    },
+    queries: { filters: `category[equals]${id}` },
   });
 
   return (
@@ -46,28 +31,20 @@ export default async function CategoryPage({ params }: Params) {
         {data.contents.map((item: Image) => (
           <div key={item.id} className="bg-white p-2 rounded shadow">
             <Link href={`/images/${item.id}`}>
-              <img
-                src={item.image.url}
-                alt={item.title}
-                className="rounded-lg hover:opacity-80 transition"
-              />
+              <img src={item.image.url} alt={item.title} className="rounded-lg hover:opacity-80 transition" />
             </Link>
             <h2 className="text-sm font-semibold mt-2">{item.title}</h2>
             <p className="text-xs text-gray-600">{item.description}</p>
             {item.tags && (
               <div className="mt-2 flex flex-wrap gap-1 text-xs text-blue-600">
                 {item.tags.map((tag) => (
-                  <Link key={tag} href={`/tag/${tag}`} className="hover:underline">
-                    #{tag}
-                  </Link>
+                  <Link key={tag} href={`/tag/${tag}`} className="hover:underline">#{tag}</Link>
                 ))}
               </div>
             )}
             {item.category && (
               <div className="mt-1 text-xs text-green-600">
-                <Link href={`/category/${item.category.id}`} className="hover:underline">
-                  カテゴリ：{item.category.name}
-                </Link>
+                <Link href={`/category/${item.category.id}`} className="hover:underline">カテゴリ：{item.category.name}</Link>
               </div>
             )}
             {item.usage && (
