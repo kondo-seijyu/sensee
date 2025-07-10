@@ -18,22 +18,24 @@ type Image = {
   usage?: string;
 };
 
-type Props = {
+type PageProps = {
   params: { id: string };
 };
 
-export default async function CategoryPage({ params }: Props) {
+export default async function CategoryPage({ params }: PageProps) {
+  const { id } = params;
+
   // ① カテゴリ名を取得
   const category = await client.get({
     endpoint: 'categories',
-    contentId: params.id,
+    contentId: id,
   });
 
   // ② カテゴリに紐づく画像一覧を取得
   const data = await client.get({
     endpoint: 'images',
     queries: {
-      filters: `category[equals]${params.id}`,
+      filters: `category[equals]${id}`,
     },
   });
 

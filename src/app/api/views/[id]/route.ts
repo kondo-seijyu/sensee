@@ -1,18 +1,22 @@
+// src/app/api/views/[id]/route.ts
 import { NextResponse } from 'next/server';
 import { client } from '@/libs/client';
 
+interface Params { params: { id: string } }
+
 export async function POST(
   request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: Params
 ) {
-  const { id } = await params; // Promise を展開
+  const { id } = params;
 
   try {
     const image = await client.get({
       endpoint: 'images',
       contentId: id,
     });
-    const currentCount = image.viewCount || 0;
+
+    const currentCount = image.viewCount ?? 0;
 
     await client.update({
       endpoint: 'images',
