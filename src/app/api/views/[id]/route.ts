@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { client } from '@/libs/client';
 
 export async function POST(_: Request, context: { params: { id: string } }) {
-  const { id } = context.params;
+  const id = context.params.id;
 
   try {
     const image = await client.get({ endpoint: 'images', contentId: id });
