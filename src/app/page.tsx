@@ -20,7 +20,7 @@ export default async function HomePage() {
 
   return (
     <main className="max-w-3xl mx-auto px-6 py-12 text-center">
-      <h1 className="text-4xl font-bold mb-4">📚 Sensee（センセエ）</h1>
+      <h1 className="text-4xl font-bold mb-4">📚 Sensee（センシー）</h1>
       <p className="text-lg text-gray-700 mb-8">
         先生のための、<br />
         安心して使える生成AI画像素材サイトです。
