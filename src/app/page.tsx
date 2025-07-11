@@ -38,6 +38,7 @@ export default function HomePage() {
       <section className="grid md:grid-cols-3 gap-6">
         {/* 通常検索＋カテゴリ */}
         <div className="space-y-4">
+          <h1 class="test-text">Hello!</h1>
           <input
             type="text"
             placeholder="“春っぽい動物”など、あいまいなことばでもOK"
