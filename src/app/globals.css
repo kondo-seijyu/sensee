@@ -1,9 +1,22 @@
 @import "tailwindcss";
 
-body {
-  background-color: hotpink;
+@layer base {
+  :root {
+    --font-sans: 'Noto Sans JP', sans-serif;
+    --font-rounded: 'Kosugi Maru', sans-serif;
+  }
+
+  body {
+    @apply font-sans bg-white text-gray-800;
+  }
 }
 
-.test-text {
-  @apply text-red-500;
+@layer components {
+  .font-rounded {
+    font-family: var(--font-rounded) !important;
+  }
+
+  .test-text {
+    @apply text-red-500;
+  }
 }

@@ -1,6 +1,21 @@
 import './globals.css';
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import { Noto_Sans_JP, Kosugi_Maru } from 'next/font/google';
+
+// フォント読み込み（Google Fonts）
+const noto = Noto_Sans_JP({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-noto',
+});
+
+const kosugi = Kosugi_Maru({
+  weight: '400',
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-kosugi',
+});
 
 export const metadata: Metadata = {
   title: 'Sensee - 先生のための画像素材',
@@ -9,8 +24,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ja">
-      <body>
+    <html lang="ja" className={`${noto.variable} ${kosugi.variable}`}>
+      <body className="font-sans">
         <header className="bg-white shadow sticky top-0 z-50">
           <nav className="max-w-5xl mx-auto px-4 py-3 flex gap-6 text-sm">
             <Link href="/" className="font-bold text-blue-600">Sensee</Link>

@@ -17,13 +17,14 @@ type ImageType = {
 
 export default function HomePage() {
   const [data, setData] = useState<ImageType[]>([]);
+  const [seasonalData, setSeasonalData] = useState<ImageType[]>([]);
 
   useEffect(() => {
     (async () => {
       try {
         const res = await client.get({
           endpoint: 'images',
-          queries: { limit: 3, orders: '-publishedAt' },
+          queries: { limit: 6, orders: '-publishedAt' },
         });
         setData(res.contents);
       } catch (err) {
@@ -32,81 +33,105 @@ export default function HomePage() {
     })();
   }, []);
 
+  useEffect(() => {
+    const getSeasonTag = () => {
+      const month = new Date().getMonth() + 1;
+      if ([3, 4, 5].includes(month)) return '春';
+      if ([6, 7, 8].includes(month)) return '夏';
+      if ([9, 10, 11].includes(month)) return '秋';
+      return '冬';
+    };
+
+    const fetchSeasonalImages = async () => {
+      try {
+        const seasonTag = getSeasonTag();
+        const res = await client.get({
+          endpoint: 'images',
+          queries: {
+            filters: `tags[contains]${seasonTag}`,
+            limit: 6,
+            orders: '-_sys.updatedAt',
+          },
+        });
+        setSeasonalData(res.contents);
+      } catch (err) {
+        console.error('Seasonal fetch error:', err);
+      }
+    };
+
+    fetchSeasonalImages();
+  }, []);
+
   return (
-    <main className="max-w-7xl mx-auto px-6 py-12 space-y-12">
-      {/* 上部3カラム：検索・季節おすすめ・センシー */}
-      <section className="grid md:grid-cols-3 gap-6">
-        {/* 通常検索＋カテゴリ */}
-        <div className="space-y-4">
-          <h1 class="test-text">Hello!</h1>
-          <input
-            type="text"
-            placeholder="“春っぽい動物”など、あいまいなことばでもOK"
-            className="w-full border border-gray-300 rounded-full px-5 py-3 focus:outline-none focus:ring-2 focus:ring-sensee-sky"
-          />
+    <main className="max-w-screen-xl mx-auto px-4 py-12 space-y-16">
+      {/* メインビジュアル */}
+      <section className="text-center space-y-6">
+        <h1 className="text-4xl font-bold text-gray-900">Sensee</h1>
+        <div className="leading-relaxed">
+          <p className="font-semibold">せんせいの“見せたい”をやさしく支える。</p>
+          <p className="text-gray-500">〜安心して使える画像は、センシーにまかせて。〜</p>
+        </div>
+
+        {/* カテゴリタグ */}
+        <div className="flex flex-wrap justify-center gap-2">
+          {['人物', '季節', '背景', '保育園', '食べ物', '動物', '自然'].map((cat) => (
+            <Link
+              key={cat}
+              href={`/category/${cat}`}
+              className="bg-secondary text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-primary/30 transition"
+            >
+              {cat}
+            </Link>
+          ))}
           <Link
             href="/category"
-            className="block w-full text-center bg-sensee-green text-white font-semibold py-2 rounded-full shadow hover:bg-green-400 transition"
+            className="text-sm text-blue-500 hover:underline self-center"
           >
-            📂 カテゴリで探す
+            もっと見る
           </Link>
         </div>
 
-        {/* 季節のおすすめ */}
-        <div className="bg-sensee-ivory rounded-xl shadow p-4">
-          <h3 className="font-semibold text-gray-800 mb-2">🎐 季節のおすすめ</h3>
-          <ul className="text-sm space-y-1">
-            <li><Link href="/tag/夏" className="hover:underline">🌞 夏の素材</Link></li>
-            <li><Link href="/tag/行事" className="hover:underline">🎉 行事・イベント</Link></li>
-          </ul>
+        {/* 検索ボックス */}
+        <div className="bg-gray-100 flex items-center justify-center max-w-xl mx-auto rounded-full px-4 py-3 shadow-sm">
+          <span className="text-gray-400 mr-2">🔍</span>
+          <input
+            type="text"
+            placeholder="検索キーワードを入力"
+            className="bg-transparent flex-1 focus:outline-none"
+          />
+        </div>
+
+        {/* 人気のタグ */}
+        <div className="flex flex-wrap justify-center gap-2">
+          {['やさしい', 'シンプル', '保育園', '春', '背景'].map((tag) => (
+            <Link
+              key={tag}
+              href={`/tag/${tag}`}
+              className="px-3 py-1 rounded-full bg-accentGreen text-sm text-white hover:bg-opacity-90 transition"
+            >
+              #{tag}
+            </Link>
+          ))}
         </div>
 
         {/* センシーAI */}
-        <aside className="flex flex-col justify-between bg-gradient-to-br from-sensee-sky/10 to-white rounded-2xl shadow-xl p-5">
-          <div>
-            <h3 className="text-base font-bold text-sensee-sky mb-1 leading-tight">💬 センシーとお話してみよう</h3>
-            <p className="text-sm text-gray-700 leading-snug">
-              画像をどう探せばいいか迷ったら、<br />
-              あいまいなことばでも大丈夫です。
-            </p>
-          </div>
-          <div className="mt-4">
-            <Link href="/chat-search">
-              <button className="w-full bg-sensee-sky hover:bg-sky-500 text-white text-sm py-2 rounded-full font-semibold shadow-md hover:shadow-lg hover:scale-[1.02] transition-transform duration-150">
-                💬 センシーにきいてみる
-              </button>
-            </Link>
-            <div className="mt-3 text-xs text-gray-500 text-right">
-              <Link href="/about" className="hover:underline">センシーについて</Link>
-            </div>
-          </div>
-        </aside>
-      </section>
-
-      {/* おすすめタグ */}
-      <section className="flex flex-wrap gap-2">
-        {['やさしい', '春', 'シンプル', '背景', '保育園'].map((tag) => (
-          <Link
-            key={tag}
-            href={`/tag/${tag}`}
-            className="px-3 py-1 rounded-full bg-sensee-green text-sm text-white hover:underline"
-          >
-            #{tag}
+        <div>
+          <Link href="/chat-search">
+            <button className="bg-primary text-white font-semibold py-2 px-6 rounded-full shadow hover:scale-[1.02] hover:bg-opacity-90 transition-transform">
+              センシーにきいてみる
+            </button>
           </Link>
-        ))}
+        </div>
       </section>
 
       {/* 新着画像 */}
-      <section>
-        <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-          <span className="bg-sensee-sky text-white text-xs px-2 py-1 rounded-full">NEW</span>
-          新着画像
-        </h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+      <section className="text-center">
+        <h2 className="text-xl font-bold text-gray-800 mb-4 font-rounded">新着画像</h2>
+        <div className="flex flex-wrap justify-center gap-4">
           {data.map((item) => (
             <div
               key={item.id}
-              className="rounded-2xl overflow-hidden bg-white shadow hover:shadow-md transition"
+              className="rounded-2xl overflow-hidden bg-white shadow hover:shadow-md transition text-center w-[150px]"
             >
               <Link href={`/images/${item.id}`}>
                 <Image
@@ -117,9 +142,43 @@ export default function HomePage() {
                   className="object-cover w-full h-auto hover:opacity-80 transition"
                 />
               </Link>
-              <div className="px-3 py-2">
-                <p className="text-sm text-gray-700 truncate">{item.title}</p>
-              </div>
+<p
+  className="text-sm font-sans line-clamp-2 leading-snug w-[150px] mx-auto px-2"
+  style={{ minHeight: '2.5em' }}
+>
+  {item.title}
+</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 季節のおすすめ */}
+      <section className="text-center">
+        <h2 className="text-xl font-bold text-gray-800 text-center mb-4 font-rounded">
+          季節のおすすめ
+        </h2>
+        <div className="flex flex-wrap justify-center gap-4">
+          {seasonalData.map((item) => (
+            <div
+              key={item.id}
+              className="rounded-2xl overflow-hidden bg-white shadow hover:shadow-md transition text-center w-[150px]"
+            >
+              <Link href={`/images/${item.id}`}>
+                <Image
+                  src={item.image.url}
+                  alt={item.title}
+                  width={item.image.width}
+                  height={item.image.height}
+                  className="object-cover w-full h-auto hover:opacity-80 transition"
+                />
+              </Link>
+              <p
+                className="text-sm font-sans line-clamp-2 leading-snug w-[150px] mx-auto px-2"
+                style={{ minHeight: '2.5em' }}
+              >
+                {item.title}
+              </p>
             </div>
           ))}
         </div>
