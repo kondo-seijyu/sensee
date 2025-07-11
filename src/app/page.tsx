@@ -107,7 +107,7 @@ export default function HomePage() {
             <Link
               key={tag}
               href={`/tag/${tag}`}
-              className="px-3 py-1 rounded-full [#B5D8B1] text-sm text-white hover:bg-opacity-90 transition"
+              className="px-3 py-1 rounded-full bg-[#B5D8B1] text-sm text-white hover:bg-opacity-90 transition"
             >
               #{tag}
             </Link>
