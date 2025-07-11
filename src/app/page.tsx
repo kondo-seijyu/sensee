@@ -1,3 +1,6 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import { client } from '@/libs/client';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -12,62 +15,114 @@ type ImageType = {
   };
 };
 
-export default async function HomePage() {
-  const data = await client.get({
-    endpoint: 'images',
-    queries: { limit: 3, orders: '-publishedAt' },
-  });
+export default function HomePage() {
+  const [data, setData] = useState<ImageType[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await client.get({
+          endpoint: 'images',
+          queries: { limit: 3, orders: '-publishedAt' },
+        });
+        setData(res.contents);
+      } catch (err) {
+        console.error('Fetch error:', err);
+      }
+    })();
+  }, []);
 
   return (
-    <main className="max-w-3xl mx-auto px-6 py-12 text-center">
-      <h1 className="text-4xl font-bold mb-4">📚 Sensee（センシー）</h1>
-      <p className="text-lg text-gray-700 mb-8">
-        先生のための、<br />
-        安心して使える生成AI画像素材サイトです。
-      </p>
+    <main className="max-w-7xl mx-auto px-6 py-12 space-y-12">
+      {/* 上部3カラム：検索・季節おすすめ・センシー */}
+      <section className="grid md:grid-cols-3 gap-6">
+        {/* 通常検索＋カテゴリ */}
+        <div className="space-y-4">
+          <input
+            type="text"
+            placeholder="“春っぽい動物”など、あいまいなことばでもOK"
+            className="w-full border border-gray-300 rounded-full px-5 py-3 focus:outline-none focus:ring-2 focus:ring-sensee-sky"
+          />
+          <Link
+            href="/category"
+            className="block w-full text-center bg-sensee-green text-white font-semibold py-2 rounded-full shadow hover:bg-green-400 transition"
+          >
+            📂 カテゴリで探す
+          </Link>
+        </div>
 
-      <div className="flex flex-col gap-4 items-center">
-        <Link
-          href="/images"
-          className="bg-blue-600 text-white px-6 py-3 rounded text-lg hover:bg-blue-700 transition"
-        >
-          ▶ 画像をさがす
-        </Link>
+        {/* 季節のおすすめ */}
+        <div className="bg-sensee-ivory rounded-xl shadow p-4">
+          <h3 className="font-semibold text-gray-800 mb-2">🎐 季節のおすすめ</h3>
+          <ul className="text-sm space-y-1">
+            <li><Link href="/tag/夏" className="hover:underline">🌞 夏の素材</Link></li>
+            <li><Link href="/tag/行事" className="hover:underline">🎉 行事・イベント</Link></li>
+          </ul>
+        </div>
 
-        <Link href="/ranking" className="text-red-600 text-sm hover:underline">
-          🔥 人気ランキングを見る
-        </Link>
+        {/* センシーAI */}
+        <aside className="flex flex-col justify-between bg-gradient-to-br from-sensee-sky/10 to-white rounded-2xl shadow-xl p-5">
+          <div>
+            <h3 className="text-base font-bold text-sensee-sky mb-1 leading-tight">💬 センシーとお話してみよう</h3>
+            <p className="text-sm text-gray-700 leading-snug">
+              画像をどう探せばいいか迷ったら、<br />
+              あいまいなことばでも大丈夫です。
+            </p>
+          </div>
+          <div className="mt-4">
+            <Link href="/chat-search">
+              <button className="w-full bg-sensee-sky hover:bg-sky-500 text-white text-sm py-2 rounded-full font-semibold shadow-md hover:shadow-lg hover:scale-[1.02] transition-transform duration-150">
+                💬 センシーにきいてみる
+              </button>
+            </Link>
+            <div className="mt-3 text-xs text-gray-500 text-right">
+              <Link href="/about" className="hover:underline">センシーについて</Link>
+            </div>
+          </div>
+        </aside>
+      </section>
 
-        <Link href="/request" className="text-blue-600 text-sm hover:underline">
-          🌟 画像をリクエストする
-        </Link>
+      {/* おすすめタグ */}
+      <section className="flex flex-wrap gap-2">
+        {['やさしい', '春', 'シンプル', '背景', '保育園'].map((tag) => (
+          <Link
+            key={tag}
+            href={`/tag/${tag}`}
+            className="px-3 py-1 rounded-full bg-sensee-green text-sm text-white hover:underline"
+          >
+            #{tag}
+          </Link>
+        ))}
+      </section>
 
-        <Link href="/about" className="text-gray-600 text-sm hover:underline">
-          このサイトについて
-        </Link>
-      </div>
-
-      {/* 🆕 新着画像 */}
-      <div className="mt-12 text-left">
-        <h2 className="text-xl font-bold mb-4">🆕 新着画像</h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {data.contents.map((item: ImageType) => (
-            <div key={item.id} className="bg-white p-2 rounded shadow">
+      {/* 新着画像 */}
+      <section>
+        <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+          <span className="bg-sensee-sky text-white text-xs px-2 py-1 rounded-full">NEW</span>
+          新着画像
+        </h2>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+          {data.map((item) => (
+            <div
+              key={item.id}
+              className="rounded-2xl overflow-hidden bg-white shadow hover:shadow-md transition"
+            >
               <Link href={`/images/${item.id}`}>
                 <Image
                   src={item.image.url}
                   alt={item.title}
                   width={item.image.width}
                   height={item.image.height}
-                  className="rounded-lg hover:opacity-80 transition"
-                  priority={false}
+                  className="object-cover w-full h-auto hover:opacity-80 transition"
                 />
               </Link>
-              <p className="text-sm mt-2">{item.title}</p>
+              <div className="px-3 py-2">
+                <p className="text-sm text-gray-700 truncate">{item.title}</p>
+              </div>
             </div>
           ))}
         </div>
-      </div>
+      </section>
     </main>
   );
 }
