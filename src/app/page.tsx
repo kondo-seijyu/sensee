@@ -1,7 +1,8 @@
 import { client } from '@/libs/client';
 import Link from 'next/link';
+import Image from 'next/image';
 
-type Image = {
+type ImageType = {
   id: string;
   title: string;
   image: {
@@ -50,13 +51,16 @@ export default async function HomePage() {
       <div className="mt-12 text-left">
         <h2 className="text-xl font-bold mb-4">🆕 新着画像</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {data.contents.map((item: Image) => (
+          {data.contents.map((item: ImageType) => (
             <div key={item.id} className="bg-white p-2 rounded shadow">
               <Link href={`/images/${item.id}`}>
-                <img
+                <Image
                   src={item.image.url}
                   alt={item.title}
+                  width={item.image.width}
+                  height={item.image.height}
                   className="rounded-lg hover:opacity-80 transition"
+                  priority={false}
                 />
               </Link>
               <p className="text-sm mt-2">{item.title}</p>
@@ -64,6 +68,6 @@ export default async function HomePage() {
           ))}
         </div>
       </div>
-    </main >
+    </main>
   );
 }

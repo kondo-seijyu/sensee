@@ -1,7 +1,8 @@
 import { client } from '@/libs/client';
 import Link from 'next/link';
+import Image from 'next/image';
 
-type Image = {
+type ImageType = {
   id: string;
   title: string;
   description: string;
@@ -18,13 +19,13 @@ type Image = {
 };
 
 type Props = {
-  searchParams: {
-    q?: string;
-  };
+  searchParams: Promise<{ q?: string }>;
 };
 
-export default async function SearchPage({ searchParams }: Props) {
-  const keyword = searchParams.q || '';
+export default async function SearchPage({
+  searchParams,
+}: Props) {
+  const { q: keyword = '' } = await searchParams;
 
   const data = await client.get({
     endpoint: 'images',
@@ -33,17 +34,15 @@ export default async function SearchPage({ searchParams }: Props) {
     },
   });
 
-  // 🔍 タグ一覧の重複を削除して取得
   const uniqueTags: string[] = Array.from(
-    new Set(data.contents.flatMap((item: Image) => item.tags || []))
+    new Set(data.contents.flatMap((item: ImageType) => item.tags || []))
   );
 
-  // 🔍 カテゴリ一覧をMapでユニーク化
   const uniqueCategories = Array.from(
-    new Map<string, Image["category"]>(
+    new Map<string, ImageType["category"]>(
       data.contents
-        .filter((item: Image) => item.category)
-        .map((item: Image) => [item.category!.id, item.category!])
+        .filter((item: ImageType) => item.category)
+        .map((item: ImageType) => [item.category!.id, item.category!])
     ).values()
   );
 
@@ -55,7 +54,6 @@ export default async function SearchPage({ searchParams }: Props) {
         <p className="text-gray-600">該当する画像は見つかりませんでした。</p>
       ) : (
         <>
-          {/* 🔁 タグ・カテゴリで再検索リンク */}
           <div className="mb-6">
             {uniqueTags.length > 0 && (
               <>
@@ -77,7 +75,7 @@ export default async function SearchPage({ searchParams }: Props) {
               <>
                 <h2 className="text-sm font-bold mb-1">カテゴリで絞り込み:</h2>
                 <div className="flex flex-wrap gap-2">
-                  {uniqueCategories.map((cat: Image["category"]) => (
+                  {uniqueCategories.map((cat: ImageType["category"]) => (
                     <Link
                       key={cat!.id}
                       href={`/category/${cat!.id}`}
@@ -91,14 +89,15 @@ export default async function SearchPage({ searchParams }: Props) {
             )}
           </div>
 
-          {/* 🎨 検索結果一覧 */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {data.contents.map((item: Image) => (
+            {data.contents.map((item: ImageType) => (
               <div key={item.id} className="bg-white p-2 rounded shadow">
                 <Link href={`/images/${item.id}`}>
-                  <img
+                  <Image
                     src={item.image.url}
                     alt={item.title}
+                    width={item.image.width}
+                    height={item.image.height}
                     className="rounded-lg hover:opacity-80 transition"
                   />
                 </Link>

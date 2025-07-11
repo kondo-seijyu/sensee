@@ -4,10 +4,11 @@ import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { client } from '@/libs/client';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export const dynamic = 'force-dynamic';
 
-type Image = {
+type ImageType = {
   id: string;
   title: string;
   description: string;
@@ -32,8 +33,8 @@ export default function ImageDetailPageWrapper() {
 }
 
 function ImageDetailPage({ id }: { id: string }) {
-  const [data, setData] = useState<Image | null>(null);
-  const [related, setRelated] = useState<Image[]>([]);
+  const [data, setData] = useState<ImageType | null>(null);
+  const [related, setRelated] = useState<ImageType[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -70,14 +71,17 @@ function ImageDetailPage({ id }: { id: string }) {
         </p>
       )}
 
-      <img
+      <Image
         src={data.image.url}
         alt={data.title}
+        width={data.image.width}
+        height={data.image.height}
         className="w-full max-w-md mx-auto rounded-xl mb-4"
       />
 
       <p className="text-gray-700 whitespace-pre-line mb-4">{data.description}</p>
 
+      {/* 閲覧数表示が必要ならここをコメント解除 */}
       {/* {typeof data.viewCount === 'number' && (
         <p className="text-xs text-gray-500 mb-4">閲覧数: {data.viewCount} 回</p>
       )} */}
@@ -126,9 +130,11 @@ function ImageDetailPage({ id }: { id: string }) {
             {related.map((item) => (
               <div key={item.id} className="bg-white p-2 rounded shadow">
                 <Link href={`/images/${item.id}`}>
-                  <img
+                  <Image
                     src={item.image.url}
                     alt={item.title}
+                    width={item.image.width}
+                    height={item.image.height}
                     className="rounded-lg hover:opacity-80 transition"
                   />
                 </Link>

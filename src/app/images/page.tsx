@@ -1,7 +1,8 @@
 import { client } from '@/libs/client';
 import Link from 'next/link';
+import Image from 'next/image';
 
-type Image = {
+type ImageType = {
   id: string;
   title: string;
   description: string;
@@ -15,7 +16,7 @@ type Image = {
     id: string;
     name: string;
   };
-  usage?: string;
+  usage?: string | string[];
 };
 
 export default async function Home() {
@@ -47,13 +48,16 @@ export default async function Home() {
 
       {/* 画像一覧 */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {data.contents.map((item: Image) => (
+        {data.contents.map((item: ImageType) => (
           <div key={item.id} className="bg-white p-2 rounded shadow">
             <Link href={`/images/${item.id}`}>
-              <img
+              <Image
                 src={item.image.url}
                 alt={item.title}
+                width={item.image.width}
+                height={item.image.height}
                 className="rounded-lg hover:opacity-80 transition"
+                priority={false}
               />
             </Link>
             <h2 className="text-sm font-semibold mt-2">{item.title}</h2>
