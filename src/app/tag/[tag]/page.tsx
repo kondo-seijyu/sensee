@@ -1,10 +1,10 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import Image from 'next/image';  // 追加
+import Image from 'next/image';
 import { client } from '@/libs/client';
 
 type Props = {
-  params: { tag: string };
+  params: Promise<{ tag: string }>;
 };
 
 type ImageType = {
@@ -18,18 +18,17 @@ type ImageType = {
 };
 
 export default async function TagPage({ params }: Props) {
-  const tag = decodeURIComponent(params.tag);
+  const { tag } = await params;
+  const decodedTag = decodeURIComponent(tag);
 
-  const data = await client
-    .get({
-      endpoint: 'images',
-      queries: {
-        filters: `tags[contains]${tag}`,
-        orders: '-publishedAt',
-        limit: 100,
-      },
-    })
-    .catch(() => null);
+  const data = await client.get({
+    endpoint: 'images',
+    queries: {
+      filters: `tags[contains]${decodedTag}`,
+      orders: '-publishedAt',
+      limit: 100,
+    },
+  }).catch(() => null);
 
   if (!data || data.contents.length === 0) return notFound();
 
