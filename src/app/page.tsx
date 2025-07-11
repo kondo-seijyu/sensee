@@ -78,7 +78,7 @@ export default function HomePage() {
             <Link
               key={cat}
               href={`/category/${cat}`}
-              className="bg-secondary text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-primary/30 transition"
+              className="bg-[#F6F4EB] text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-primary/30 transition"
             >
               {cat}
             </Link>
@@ -107,7 +107,7 @@ export default function HomePage() {
             <Link
               key={tag}
               href={`/tag/${tag}`}
-              className="px-3 py-1 rounded-full bg-accentGreen text-sm text-white hover:bg-opacity-90 transition"
+              className="px-3 py-1 rounded-full [#B5D8B1] text-sm text-white hover:bg-opacity-90 transition"
             >
               #{tag}
             </Link>
@@ -117,7 +117,7 @@ export default function HomePage() {
         {/* センシーAI */}
         <div>
           <Link href="/chat-search">
-            <button className="bg-primary text-white font-semibold py-2 px-6 rounded-full shadow hover:scale-[1.02] hover:bg-opacity-90 transition-transform">
+            <button className="bg-[#A7D8DE] text-white font-semibold py-2 px-6 rounded-full shadow hover:scale-[1.02] hover:bg-opacity-90 transition-transform">
               センシーにきいてみる
             </button>
           </Link>
