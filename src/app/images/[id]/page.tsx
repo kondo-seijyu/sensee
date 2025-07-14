@@ -17,7 +17,7 @@ type ImageType = {
     height: number;
     width: number;
   };
-  tags?: string[];
+  tags?: { id: string; name: string }[];
   category?: {
     id: string;
     name: string;
@@ -28,7 +28,6 @@ type ImageType = {
 
 export default function ImageDetailPageWrapper() {
   const params = useParams() as { id: string };
-
   return <ImageDetailPage id={params.id} />;
 }
 
@@ -81,11 +80,6 @@ function ImageDetailPage({ id }: { id: string }) {
 
       <p className="text-gray-700 whitespace-pre-line mb-4">{data.description}</p>
 
-      {/* 閲覧数表示が必要ならここをコメント解除 */}
-      {/* {typeof data.viewCount === 'number' && (
-        <p className="text-xs text-gray-500 mb-4">閲覧数: {data.viewCount} 回</p>
-      )} */}
-
       <a
         href={data.image.url}
         download
@@ -94,32 +88,32 @@ function ImageDetailPage({ id }: { id: string }) {
         画像をダウンロード
       </a>
 
-      {Array.isArray(data.tags) && data.tags.length > 0 && (
-        <div className="mt-6">
-          <h2 className="text-sm font-bold mb-2 text-blue-600">タグ</h2>
-          <div className="flex flex-wrap gap-2">
-            {data.tags.map(tag => (
-              <Link
-                key={tag}
-                href={`/tag/${tag}`}
-                className="text-sm text-blue-700 hover:underline"
-              >
-                #{tag}
-              </Link>
-            ))}
-          </div>
-        </div>
-      )}
-
       {data.category && (
         <div className="mt-6">
           <h2 className="text-sm font-bold mb-2 text-green-600">カテゴリ</h2>
           <Link
-            href={`/category/${data.category.id}`}
+            href={`/images?category=${data.category.id}`}
             className="text-sm text-green-700 hover:underline"
           >
             {data.category.name}
           </Link>
+        </div>
+      )}
+
+      {Array.isArray(data.tags) && data.tags.length > 0 && (
+        <div className="mt-6">
+          <h2 className="text-sm font-bold mb-2 text-blue-600">タグ</h2>
+          <div className="flex flex-wrap gap-2">
+            {data.tags.map((tag) => (
+              <Link
+                key={tag.id}
+                href={`/images?tags=${tag.id}`}
+                className="text-sm text-blue-700 hover:underline"
+              >
+                #{tag.name}
+              </Link>
+            ))}
+          </div>
         </div>
       )}
 

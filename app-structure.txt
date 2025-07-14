@@ -1,0 +1,32 @@
+src/app
+├── about
+│   └── page.tsx
+├── api
+│   ├── chat-search
+│   ├── ranking
+│   └── views
+├── category
+│   ├── [id]
+│   └── page.tsx
+├── chat-search
+│   └── page.tsx
+├── favicon.ico
+├── globals.css
+├── images
+│   ├── [id]
+│   ├── ClientPage.tsx
+│   └── page.tsx
+├── layout.tsx
+├── login
+│   └── page.tsx
+├── page.tsx
+├── ranking
+│   └── page.tsx
+├── request
+│   └── page.tsx
+├── search
+│   └── page.tsx
+└── tag
+    └── [tag]
+
+17 directories, 13 files

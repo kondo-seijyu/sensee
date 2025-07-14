@@ -23,7 +23,6 @@ export default function ChatSearchPage() {
   const [loading, setLoading] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
 
-  // 最新メッセージが見えるようスクロール
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
@@ -32,7 +31,6 @@ export default function ChatSearchPage() {
     e.preventDefault();
     if (!input.trim()) return;
 
-    // ユーザーメッセージ追加
     setMessages((prev) => [...prev, { role: 'user', text: input }]);
     setLoading(true);
 
@@ -66,7 +64,7 @@ export default function ChatSearchPage() {
 
   return (
     <main className="max-w-xl mx-auto p-6 flex flex-col h-[80vh] border rounded shadow">
-      <h1 className="text-2xl font-bold mb-4">チャット検索ベータ版</h1>
+      <h1 className="text-2xl font-bold mb-4">Sensee AIベータ版</h1>
 
       <div className="flex-1 overflow-y-auto mb-4 space-y-4 bg-gray-50 p-4 rounded">
         {messages.map((msg, i) => (
@@ -100,7 +98,7 @@ export default function ChatSearchPage() {
         <input
           type="text"
           className="flex-grow border rounded px-3 py-2"
-          placeholder="質問を入力してください"
+          placeholder="探したい画像のニュアンスを入力してみてください。"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           disabled={loading}
