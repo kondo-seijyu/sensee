@@ -29,35 +29,37 @@ export default async function CategoryPage() {
   });
 
   return (
-    <main className="p-6 max-w-screen-xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">カテゴリー一覧</h1>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {categories.map((cat) => {
-          const thumb = thumbnailMap[cat.id];
-          return (
-            <Link
-              key={cat.id}
-              href={`/images?category=${cat.id}`}
-              className="border rounded-xl p-4 flex flex-col items-center hover:shadow transition"
-            >
-              {thumb ? (
-                <Image
-                  src={thumb.image.url}
-                  alt={cat.name}
-                  width={120}
-                  height={120}
-                  className="rounded mb-2 object-contain"
-                />
-              ) : (
-                <div className="w-[120px] h-[120px] bg-gray-100 rounded mb-2 flex items-center justify-center">
-                  <span className="text-gray-500 text-xs">画像なし</span>
-                </div>
-              )}
-              <h2 className="text-lg font-bold">{cat.name}</h2>
-            </Link>
-          );
-        })}
-      </div>
+    <main className="max-w-[1040px] mx-auto px-4 py-16 space-y-10 font-sans">
+      <h1 className="text-2xl font-bold font-rounded text-gray-800">カテゴリー</h1>
+      <section className="bg-[#F9FAFB] p-6 rounded-2xl shadow-card space-y-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {categories.map((cat) => {
+            const thumb = thumbnailMap[cat.id];
+            return (
+              <Link
+                key={cat.id}
+                href={`/images?category=${cat.id}`}
+                className="border rounded-xl p-4 flex flex-col items-center hover:shadow transition"
+              >
+                {thumb ? (
+                  <Image
+                    src={thumb.image.url}
+                    alt={cat.name}
+                    width={120}
+                    height={120}
+                    className="rounded mb-2 object-contain"
+                  />
+                ) : (
+                  <div className="w-[120px] h-[120px] bg-gray-100 rounded mb-2 flex items-center justify-center">
+                    <span className="text-gray-500 text-xs">画像なし</span>
+                  </div>
+                )}
+                <h2 className="text-lg font-bold">{cat.name}</h2>
+              </Link>
+            );
+          })}
+        </div>
+      </section>
     </main>
   );
 }

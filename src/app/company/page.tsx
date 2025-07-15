@@ -5,32 +5,13 @@ import Image from 'next/image';
 export default function CompanyPage() {
   return (
     <main className="max-w-[1040px] mx-auto px-4 py-16 space-y-10 font-sans">
-      <h1 className="text-2xl font-bold font-rounded text-gray-800">埋めないことを設計して、余灰のあるデジタル体験を。</h1>
-      <section className="bg-[#F6F4EB] p-6 rounded-2xl shadow-card space-y-4">
-        <h2 className="text-lg font-bold font-rounded text-gray-800">インターネットに静けさをつくる。</h2>
-        <p className="text-gray-600 text-sm">情報は、速く、強く、正しくあろうとする。<br />
-          Webも、言葉も、世界も。<br />
-          <br />
-          けれど、伝えるということは、本当に「埋める」ことだろうか。<br />
-          音のない間、未定義な空間、語られなかった余白——<br />
-          <br />
-          私たちは、そこに価値があると感じている。<br />
-          <br />
-          「余白」は、きっと不親切ではない。<br />
-          「余灰」は、熱狂のあとにだけ残る静かな記憶であり、<br />
-          「侘び寂び」は、整いすぎない美しさだろう。<br />
-          <br />
-          私たちがつくりたいものは、UIでも、仕組みでも、サービスでもない。<br />
-          <br />
-          <h2 className="text-lg font-bold font-rounded text-gray-800">思考と構造のあいだをつくる。</h2>
-          <br />
-          ノイズのない情報設計。<br />
-          選ばせる余白。<br />
-          AIと人のあいだにある“やさしい問い”。<br />
-          <br />
-          焦がすような熱量ではなく、<br />
-          灰となって残る思想を、テクノロジーに刻んみたい。<br />
-        </p>
+      <h1 className="bg-[#fff] text-2xl font-bold font-rounded text-[#F6F4EB]"> </h1>
+      <section className="bg-[#F6F4EB] p-6 rounded-2xl shadow-card space-y-6">
+        <div className="space-y-4 text-gray-600 text-sm leading-relaxed">
+          <p>思考と構造のあいだに余白をつくる。</p>
+          <p>埋めないことを設計し、熱ではなく灰を残す。</p>
+          <p>語らない美しさが、静かな体験をつくる。</p>
+        </div>
       </section>
 
       <section className="bg-[#F9FAFB] p-6 rounded-2xl shadow-card space-y-4">
@@ -92,16 +73,16 @@ export default function CompanyPage() {
         <h2 className="text-xl font-bold font-rounded text-gray-800">制作実績</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
           <div className="rounded-2xl overflow-hidden shadow-card bg-white">
-            <Image src="/works/work1.png" alt="実績1" width={400} height={300} className="w-full h-auto object-cover" />
+            <Image src="/images/work1.png" alt="実績1" width={400} height={300} className="w-full h-auto object-cover" />
           </div>
           <div className="rounded-2xl overflow-hidden shadow-card bg-white">
-            <Image src="/works/work2.png" alt="実績2" width={400} height={300} className="w-full h-auto object-cover" />
+            <Image src="/images/work2.png" alt="実績2" width={400} height={300} className="w-full h-auto object-cover" />
           </div>
           <div className="rounded-2xl overflow-hidden shadow-card bg-white">
-            <Image src="/works/work3.png" alt="実績3" width={400} height={300} className="w-full h-auto object-cover" />
+            <Image src="/images/work3.png" alt="実績3" width={400} height={300} className="w-full h-auto object-cover" />
           </div>
           <div className="rounded-2xl overflow-hidden shadow-card bg-white">
-            <Image src="/works/work4.png" alt="実績4" width={400} height={300} className="w-full h-auto object-cover" />
+            <Image src="/images/work4.png" alt="実績4" width={400} height={300} className="w-full h-auto object-cover" />
           </div>
         </div>
       </section>

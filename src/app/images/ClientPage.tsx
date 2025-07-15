@@ -95,14 +95,15 @@ export default function ClientPage() {
   };
 
   return (
-    <main className="p-6 max-w-screen-xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">画像一覧</h1>
-
-      <h2 className="text-lg font-semibold mb-2">カテゴリ</h2>
-      <CategoryList categories={categories} selected={category} />
-
-      <h2 className="text-lg font-semibold mt-6 mb-2">タグ</h2>
-      <div className="flex flex-wrap gap-2">
+    <main className="max-w-[1040px] mx-auto px-4 py-16 space-y-10 font-sans">
+      <h1 className="text-2xl font-bold font-rounded text-gray-800">画像一覧
+      </h1>
+      <section className="bg-[#F6F4EB] p-6 rounded-2xl shadow-card space-y-4">
+        <h2 className="text-lg font-bold font-rounded text-gray-800">カテゴリから探す</h2>
+        <CategoryList categories={categories} selected={category} />
+      </section>
+     <section className="bg-[#F9FAFB] p-6 rounded-2xl shadow-card space-y-4">        <h2 className="text-lg font-bold font-rounded text-gray-800">タグから探す</h2>
+           <div className="flex flex-wrap gap-2">
         {tags.map(tag => {
           const isSel = tagParams.includes(tag.id);
           return (
@@ -112,15 +113,16 @@ export default function ClientPage() {
               className={`px-2 py-1 text-sm rounded border ${isSel
                 ? 'bg-blue-500 text-white'
                 : 'text-blue-500 border-blue-500 hover:bg-blue-100'
-              }`}
+                }`}
             >
               #{tag.name}
             </Link>
           );
         })}
       </div>
+      </section>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 my-8">
+      <div className="grid grid-cols-2 md:grid-cols-4  xl:grid-cols-6 gap-4 my-8 justify-items-center">
         {isLoading ? (
           <p className="col-span-full text-center">読み込み中...</p>
         ) : (
@@ -138,7 +140,7 @@ export default function ClientPage() {
               className={`px-3 py-1 text-sm rounded border ${pn === page
                 ? 'bg-blue-500 text-white'
                 : 'bg-white text-blue-500 border-blue-500 hover:bg-blue-100'
-              }`}
+                }`}
             >
               {pn}
             </Link>

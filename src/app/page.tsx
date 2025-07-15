@@ -123,7 +123,7 @@ export default function HomePage() {
     <main className="max-w-[1040px] mx-auto px-4 py-12 space-y-16">
       {/* メインビジュアル */}
       <section className="text-center space-y-6">
-        <h1 className="sr-only">Sensee</h1> {/* 視覚的には非表示だけどSEO/アクセシビリティに有効 */}
+        <h1 className="sr-only">Sensee</h1>
         <div className="mb-6">
           <Image
             src="/logo.png"
@@ -136,7 +136,7 @@ export default function HomePage() {
         </div>
         <div className="leading-relaxed">
           <p className="font-semibold">せんせいの“見せたい”をやさしく支える。</p>
-          <p className="text-gray-500">〜安心して使える画像は、Senセンシーにまかせて。〜</p>
+          <p className="text-gray-500">〜安心して使える画像は、Sensee(センシー)にまかせて。〜</p>
         </div>
 
         {/* カテゴリタグ */}
@@ -145,7 +145,7 @@ export default function HomePage() {
             <Link
               key={cat.id}
               href={`/category/${cat.id}`}
-              className="bg-[#F6F4EB] text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-primary/30 transition"
+              className="bg-[#F6F4EB] text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-[#A7D8DE] /30 transition"
             >
               {cat.name}
             </Link>
@@ -189,17 +189,15 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* センシーAI */}
         <div>
-          <Link href="/chat-search">
-            <button className="bg-[#A7D8DE] text-white font-semibold py-2 px-6 rounded-full shadow hover:scale-[1.02] hover:bg-opacity-90 transition-transform">
-              ”Sensee AI”にきいてみる
+          <Link href="/chat-search" passHref>
+            <button className="bg-[#A7D8DE] text-white font-semibold py-2 px-6 rounded-full shadow transition-all duration-200 ease-in-out hover:scale-[1.03] hover:shadow-lg hover:bg-opacity-90 text-sm cursor-pointer">
+              Sensee AIとお話ししてみる
             </button>
           </Link>
         </div>
       </section>
 
-      {/* 新着画像 */}
       <section className="text-center">
         <h2 className="text-xl font-bold text-gray-800 mb-4 font-rounded">新着画像</h2>
         <div className="flex flex-wrap justify-center gap-4">
@@ -228,7 +226,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 季節のおすすめ */}
       {seasonalData.length > 0 && (
         <section className="text-center">
           <h2 className="text-xl font-bold text-gray-800 text-center mb-4 font-rounded">季節のおすすめ</h2>
@@ -251,7 +248,6 @@ export default function HomePage() {
         </section>
       )}
 
-      {/* 人気の画像 */}
       <section className="text-center">
         <h2 className="text-xl font-bold text-gray-800 mb-4 font-rounded">人気の画像</h2>
         <div className="flex flex-wrap justify-center gap-4">
@@ -277,30 +273,29 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Senseeとは */}
+
       <section className="text-center py-16 px-4 mx-auto">
         <h2 className="text-2xl font-bold text-gray-900 mb-6 font-rounded">Senseeとは？</h2>
         <div className="mx-auto">
           <p className="text-gray-700 leading-relaxed text-base whitespace-pre-line">
             Sensee（センシー）は、
             <span className="bg-yellow-200 px-1 rounded-sm">先生の“見せたい”をやさしく支える</span>
-            画像素材サイトです。
+            画像素材サイトです。<br />
             保育・教育現場にぴったりな画像を、
             <span className="bg-yellow-200 px-1 rounded-sm">あいまいなことばでもAIが見つけてくれる</span>
-            のが特徴。
+            のが特徴。<br />
             安心して使える画像は、センシーにおまかせください。
           </p>
-          <Link
-            href="/about"
-            className="inline-block mt-4 text-sm text-blue-600 hover:underline font-medium"
-          >
-            このサイトについて
+          <Link href="/about">
+            <button className="mt-6 bg-[#A7D8DE] text-white font-semibold py-2 px-6 rounded-full shadow transition-all duration-200 ease-in-out hover:scale-[1.03] hover:shadow-lg hover:bg-opacity-90 text-sm cursor-pointer">
+              Senseeについてもっと知る
+            </button>
           </Link>
         </div>
       </section>
-      {/* Senseeのポイント紹介 */}
+
       <section className="text-center px-4 pb-16">
-        <h3 className="text-xl font-semibold mb-6 text-gray-800">Senseeが選ばれる理由</h3>
+        <h2 className="text-2xl font-bold text-gray-900 mb-6 font-rounded">Senseeが選ばれる理由</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-4xl mx-auto text-left">
           <div className="bg-[#F6F4EB] p-4 rounded-xl shadow-sm">
             <p className="text-lg font-bold mb-2">① 現在はベータ版のため完全無料！</p>
@@ -328,7 +323,7 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      {/* SenseeAIとは？ */}
+
       <section className="text-center px-4 py-16 bg-[#F9FAFB]">
         <h2 className="text-2xl font-bold text-gray-900 mb-6 font-rounded">"Sensee AI"とは？</h2>
         <div className="max-w-3xl mx-auto text-gray-700 leading-relaxed text-base space-y-4">
@@ -343,7 +338,7 @@ export default function HomePage() {
           <p>会話するだけで、画像検索がもっと簡単＆たのしく。</p>
 
           <Link href="/chat-search">
-            <button className="mt-6 bg-[#A7D8DE] text-white font-semibold py-2 px-6 rounded-full shadow hover:scale-[1.02] hover:bg-opacity-90 transition-transform">
+            <button className="bg-[#A7D8DE] text-white font-semibold py-2 px-6 rounded-full shadow transition-all duration-200 ease-in-out hover:scale-[1.03] hover:shadow-lg hover:bg-opacity-90 text-sm cursor-pointer">
               Sensee AIとお話してみる
             </button>
           </Link>
@@ -357,7 +352,7 @@ export default function HomePage() {
           教育・保育現場に役立つ素材をどんどん追加していきます！
         </p>
         <Link href="/request">
-          <button className="bg-[#FFCE73] text-white font-semibold py-3 px-6 rounded-full shadow hover:scale-[1.03] hover:brightness-105 transition-transform">
+            <button className="bg-[#EAC67A] text-white font-semibold py-2 px-6 rounded-full shadow transition-all duration-200 ease-in-out hover:scale-[1.03] hover:shadow-lg hover:bg-opacity-90 text-sm cursor-pointer">
             リクエストする
           </button>
         </Link>

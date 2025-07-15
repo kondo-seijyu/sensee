@@ -6,32 +6,33 @@ export async function POST(req: Request) {
     const data = await req.json();
     const { name, email, message, company = '-', tel = '-' } = data;
 
-    // 必須項目チェック
     if (!name || !email || !message) {
-      return NextResponse.json(
-        { success: false, error: '必須項目が不足しています。' },
-        { status: 400 }
-      );
+      return NextResponse.json({ success: false, error: '必須項目が不足しています。' }, { status: 400 });
     }
 
-    // SMTP トランスポートの設定
+    const now = new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' });
+
     const transporter = nodemailer.createTransport({
-      host: 'smtp.mailgun.org', // Mailgun の例。必要に応じて変更
-      port: 587,
-      secure: false,
+      host: process.env.SMTP_HOST!,
+      port: Number(process.env.SMTP_PORT || 587),
+      secure: process.env.SMTP_SECURE === 'true',
       auth: {
         user: process.env.SMTP_USER!,
         pass: process.env.SMTP_PASS!,
       },
     });
 
-    // メール内容
-    const mailOptions = {
-      from: `"${name}" <${email}>`,
-      to: 'sensee@reflection-inc.com',
+    // ① 管理者宛メール
+    await transporter.sendMail({
+      from: `"お問い合わせフォーム" <${process.env.SMTP_USER}>`,
+      to: process.env.TARGET_EMAIL!,
+      replyTo: email,
       subject: '【Sensee】お問い合わせが届きました',
       text: `
 【Sensee】お問い合わせフォームからメッセージが届きました。
+
+▼受信日時：
+${now}
 
 ▼会社名・学校名：
 ${company}
@@ -48,14 +49,48 @@ ${email}
 ▼お問い合わせ内容：
 ${message}
       `.trim(),
-    };
+    });
 
-    // メール送信
-    await transporter.sendMail(mailOptions);
+    // ② 自動返信メール（ユーザー宛）
+    await transporter.sendMail({
+      from: `"Sensee運営" <${process.env.SMTP_USER}>`,
+      to: email,
+      subject: '【Sensee】お問い合わせありがとうございます',
+      text: `
+${name} 様
+
+この度はお問い合わせいただきありがとうございます。
+以下の内容でお問い合わせを受け付けました。
+
+=======================
+▼会社名・学校名：
+${company}
+
+▼氏名：
+${name}
+
+▼電話番号：
+${tel}
+
+▼メールアドレス：
+${email}
+
+▼お問い合わせ内容：
+${message}
+=======================
+
+内容を確認のうえ、担当よりご連絡させていただく場合がございます。
+今後ともSenseeをよろしくお願いいたします。
+
+-------------------------
+Sensee（センシー）運営
+https://sensee.site/
+      `.trim(),
+    });
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error('メール送信エラー:', error);
+    console.error('📮 メール送信エラー:', error);
     return NextResponse.json({ success: false, error: '送信に失敗しました。' }, { status: 500 });
   }
 }

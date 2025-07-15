@@ -23,16 +23,43 @@ export default function RequestPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+
+    if (!request.trim()) {
+      alert('リクエスト内容は必須です');
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/request', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          company,
+          name,
+          email,
+          request,
+          purpose,
+        }),
+      });
+
+      if (res.ok) {
+        setSubmitted(true);
+      } else {
+        alert('送信に失敗しました。時間をおいて再度お試しください。');
+      }
+    } catch (error) {
+      console.error('送信エラー:', error);
+      alert('送信時にエラーが発生しました。');
+    }
   };
 
   if (submitted) {
     return (
       <div className="max-w-xl mx-auto px-4 py-12 text-center space-y-4">
         <h1 className="text-2xl font-bold font-rounded">リクエストありがとうございました！</h1>
-        <p className="text-gray-700">今後の素材追加の参考にさせていただきます 🙏</p>
+        <p className="text-gray-700">今後の画像追加の参考にさせていただきます。</p>
         <Link href="/">
-          <button className="mt-4 bg-primary text-white font-semibold py-2 px-6 rounded-full shadow hover:scale-105 hover:bg-opacity-90 transition-transform text-sm cursor-pointer">
+          <button className="mt-4 bg-[#A7D8DE] text-white font-semibold py-2 px-6 rounded-full shadow hover:scale-105 hover:bg-opacity-90 transition-transform text-sm cursor-pointer">
             トップページに戻る
           </button>
         </Link>
@@ -107,12 +134,21 @@ export default function RequestPage() {
               placeholder="例：10月の行事紹介スライドに使いたい"
             />
           </div>
-          <button
-            type="submit"
-            className="bg-[#A7D8DE] text-white font-semibold py-2 px-6 rounded-full shadow hover:scale-105 hover:bg-opacity-90 transition-transform text-sm cursor-pointer"
-          >
-            送信する
-          </button>
+          <div className="text-sm text-gray-500 text-center px-4">
+            ※ご入力いただいた内容は、サービス改善やご連絡に利用させていただく場合があります。<br />
+            ご記入のメールアドレス宛に返信させていただくこともございます。<br />
+            <Link href="/privacy" className="text-[#A7D8DE] underline hover:opacity-80 transition">
+              プライバシーポリシー
+            </Link>をご確認ください。
+          </div>
+          <div className="text-center">
+            <button
+              type="submit"
+              className="bg-[#A7D8DE] text-white font-semibold py-2 px-6 rounded-full shadow hover:scale-105 hover:bg-opacity-90 transition-transform text-sm cursor-pointer"
+            >
+              送信する
+            </button>
+          </div>
         </form>
       </section>
       <section className="bg-[#F6F4EB] p-6 rounded-2xl shadow-card space-y-4">

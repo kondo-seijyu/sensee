@@ -34,7 +34,7 @@ export default function Header() {
           </svg>
         </button>
 
-        {/* PCナビ */}
+        {/* PC */}
         <nav className="hidden md:flex gap-6 text-sm">
           {navItems.map((item) => (
             <Link key={item.href} href={item.href} className="hover:underline">{item.label}</Link>
@@ -43,7 +43,7 @@ export default function Header() {
         </nav>
       </div>
 
-      {/* モバイルメニュー オーバーレイ */}
+      {/* SP overlay*/}
       {isOpen && (
         <div className="fixed inset-0 bg-white z-40 flex flex-col items-center justify-center text-lg space-y-4 md:hidden">
           <div className="absolute top-4 left-4">
@@ -68,6 +68,9 @@ export default function Header() {
           <Link href="/login" className="text-blue-600 hover:underline" onClick={() => setIsOpen(false)}>
             ログイン / 会員登録
           </Link>
+          <div className="text-center py-4 text-xs text-gray-400">
+            © 2025 Sensee / 株式会社リフレクション
+          </div>
         </div>
       )}
     </header>

@@ -44,16 +44,29 @@ export default function ContactPage() {
 
   return (
     <main className="max-w-[1040px] mx-auto px-4 py-16 space-y-10 font-sans">
-      <h1 className="text-2xl font-bold font-rounded text-gray-800">お問い合わせ</h1>
-      <section className="bg-[#F6F4EB] p-6 rounded-2xl shadow-card space-y-4">
-        <h2 className="text-lg font-bold font-rounded text-gray-800">お気軽にお問い合わせください！</h2>
-        <p className="text-gray-600 text-sm leading-relaxed whitespace-pre-line">
-          ご意見・ご要望・不具合などありましたら、以下のフォームからお気軽にお送りください。
-        </p>
-      </section>
+      {!submitted && (
+        <>
+          <h1 className="text-2xl font-bold font-rounded text-gray-800">お問い合わせ</h1>
+          <section className="bg-[#F6F4EB] p-6 rounded-2xl shadow-card space-y-4">
+            <h2 className="text-lg font-bold font-rounded text-gray-800">お気軽にお問い合わせください！</h2>
+            <p className="text-gray-600 text-sm leading-relaxed whitespace-pre-line">
+              ご意見・ご要望・不具合などありましたら、以下のフォームからお気軽にお送りください。
+            </p>
+          </section>
+        </>
+      )}
 
       {submitted ? (
-        <div className="text-green-600 font-semibold text-center">送信ありがとうございます！</div>
+        <div className="max-w-xl mx-auto px-4 py-12 text-center space-y-4">
+          <h2 className="text-xl font-bold text-gray-800 font-rounded">お問い合わせありがとうございました！</h2>
+          <p className="text-gray-600 text-sm">内容を確認の上、必要に応じて担当よりご連絡させていただきます。</p>
+          <Link
+            href="/"
+            className="inline-block bg-[#A7D8DE] text-white font-semibold py-2 px-6 rounded-full shadow hover:scale-105 hover:bg-opacity-90 transition-transform text-sm"
+          >
+            トップページに戻る
+          </Link>
+        </div>
       ) : (
         <form onSubmit={handleSubmit} className="bg-[#F9FAFB] p-6 rounded-2xl shadow-card space-y-4">
           <div>
@@ -109,11 +122,12 @@ export default function ContactPage() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">お問い合わせ内容</label>
+            <label className="block text-sm font-medium text-gray-700">お問い合わせ内容<span className="text-red-500">*</span></label>
             <textarea
               name="message"
               rows={4}
               value={form.message}
+              required
               onChange={handleChange}
               className="w-full rounded-md p-2 bg-[#FCFCFC] border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary"
               placeholder="ご意見やご要望、サービスへの質問などをご記入ください。"
@@ -139,7 +153,10 @@ export default function ContactPage() {
           <div className="text-center">
             <button
               type="submit"
-              className="bg-[#A7D8DE] text-white font-semibold py-2 px-6 rounded-full shadow hover:scale-105 hover:bg-opacity-90 transition-transform text-sm cursor-pointer"
+              disabled={!agree}
+              className={`bg-[#A7D8DE] text-white font-semibold py-2 px-6 rounded-full shadow transition-transform text-sm
+    ${agree ? 'hover:scale-105 hover:bg-opacity-90 cursor-pointer' : 'opacity-50 cursor-not-allowed'}
+  `}
             >
               送信する
             </button>
