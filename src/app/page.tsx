@@ -4,28 +4,7 @@ import { useEffect, useState } from 'react';
 import { client } from '@/libs/client';
 import Link from 'next/link';
 import Image from 'next/image';
-
-// 型定義
-
-type ImageType = {
-  id: string;
-  title: string;
-  image: {
-    url: string;
-    height: number;
-    width: number;
-  };
-};
-
-type Category = {
-  id: string;
-  name: string;
-};
-
-type Tag = {
-  id: string;
-  name: string;
-};
+import { ImageType, Tag, Category } from '@/types';
 
 export default function HomePage() {
   const [data, setData] = useState<ImageType[]>([]);
@@ -71,8 +50,8 @@ export default function HomePage() {
         setTags(catTag[1].contents);
 
         const tagCountMap: Record<string, { name: string; count: number }> = {};
-        latest.contents.forEach((img: any) => {
-          img.tags?.forEach((tag: any) => {
+        latest.contents.forEach((img: ImageType) => {
+          img.tags?.forEach((tag: Tag) => {
             if (!tagCountMap[tag.id]) {
               tagCountMap[tag.id] = { name: tag.name, count: 1 };
             } else {

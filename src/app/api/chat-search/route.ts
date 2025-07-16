@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import OpenAI from 'openai';
 import { client } from '@/libs/client';
+import { ImageType } from '@/types'
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
@@ -50,7 +51,7 @@ export async function POST(request: Request) {
 
     try {
       parsedTags = JSON.parse(rawJson) as TagScore[];
-    } catch (e) {
+    } catch {
       console.warn('⚠️ GPT出力のJSONパース失敗:', rawJson);
     }
 
@@ -80,7 +81,8 @@ export async function POST(request: Request) {
       },
     });
 
-    const formattedImages = (data.contents as any[]).map((item) => ({
+    const contents = data.contents as ImageType[];
+    const formattedImages = contents.map((item) => ({
       id: item.id,
       title: item.title,
       image: {

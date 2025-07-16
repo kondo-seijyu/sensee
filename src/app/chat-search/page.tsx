@@ -4,19 +4,21 @@ import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-type ImageType = {
-  id: string;
-  title: string;
-  image: {
-    url: string;
-    width: number;
-    height: number;
-  };
-};
+import type { ImageType } from '@/types';
 
-type Message =
-  | { role: 'user'; text: string }
-  | { role: 'bot'; text: string; images: ImageType[] };
+// Message型に明確な型を指定
+interface UserMessage {
+  role: 'user';
+  text: string;
+}
+
+interface BotMessage {
+  role: 'bot';
+  text: string;
+  images: ImageType[];
+}
+
+type Message = UserMessage | BotMessage;
 
 export default function ChatSearchPage() {
   const [input, setInput] = useState('');
@@ -33,7 +35,7 @@ export default function ChatSearchPage() {
     }
   }, [messages]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!input.trim()) return;
 
@@ -57,7 +59,8 @@ export default function ChatSearchPage() {
           images: data.images || [],
         },
       ]);
-    } catch {
+    } catch (error) {
+      console.error('APIエラー:', error);
       setMessages((prev) => [
         ...prev,
         { role: 'bot', text: '申し訳ありません。検索に失敗しました。', images: [] },
@@ -89,6 +92,7 @@ export default function ChatSearchPage() {
           例えば「この画像どこ？」「夏のプリントに使えるイラストある？」など、あいまいなニュアンスでも検索できます。
         </p>
       </section>
+
       <section className="bg-[#F9FAFB] p-6 rounded-2xl shadow-card space-y-6">
         <h2 className="text-lg font-bold font-rounded text-gray-800">Sensee AI</h2>
         <p className="text-gray-600 text-sm leading-relaxed whitespace-pre-line">
