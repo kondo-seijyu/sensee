@@ -14,9 +14,11 @@ type ImageType = {
   usage?: string | string[];
 };
 
-type CategoryPageProps = { params: { id: string } };
-
-export default async function CategoryPage({ params }: CategoryPageProps) {
+export default async function CategoryPage({
+  params,
+}: {
+  params: { id: string };
+}) {
   const { id } = params;
 
   const category = await client.get({ endpoint: 'categories', contentId: id });
