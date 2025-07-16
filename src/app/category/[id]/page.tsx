@@ -14,9 +14,9 @@ type ImageType = {
   usage?: string | string[];
 };
 
-// 型を緩めて any を許容しつつ、VercelビルドでもOK
-export default async function CategoryPage(props: any) {
-  const id = props?.params?.id;
+// `params`だけ型外し（VSCode/Vercel対策）
+export default async function CategoryPage({ params }: { [key: string]: any }) {
+  const id = params?.id;
   if (!id) {
     return <main className="p-8">カテゴリIDが指定されていません。</main>;
   }
