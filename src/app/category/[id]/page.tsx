@@ -71,3 +71,11 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     </main>
   );
 }
+
+export async function generateStaticParams() {
+  const categories = await client.get({ endpoint: 'categories' });
+
+  return categories.contents.map((category: { id: string }) => ({
+    id: category.id,
+  }));
+}
