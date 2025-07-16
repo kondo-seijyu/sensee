@@ -15,12 +15,12 @@ type ImageType = {
 };
 
 type Props = {
-  params: { id: string };
+  params?: { id?: string };
 };
 
-// @ts-expect-error: Vercelビルド時の型チェックとの互換性対応
 export default async function CategoryPage({ params }: Props) {
-  const id = params.id;
+  const id = params?.id;
+  if (!id) return <main className="p-8">カテゴリIDが指定されていません。</main>;
 
   const category = await client.get({ endpoint: 'categories', contentId: id });
   const data = await client.get({
