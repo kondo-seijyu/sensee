@@ -14,9 +14,13 @@ type ImageType = {
   usage?: string | string[];
 };
 
-// @ts-ignore: Next.js内部のPageProps型とのparams型の衝突を回避
-export default async function CategoryPage(props: any) {
-  const id = props.params.id;
+type Props = {
+  params: { id: string };
+};
+
+// @ts-expect-error: Vercelビルド時の型チェックとの互換性対応
+export default async function CategoryPage({ params }: Props) {
+  const id = params.id;
 
   const category = await client.get({ endpoint: 'categories', contentId: id });
   const data = await client.get({
