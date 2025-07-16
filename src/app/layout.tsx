@@ -8,9 +8,24 @@ import ScrollRestorer from '../components/ScrollRestorer';
 const noto = Noto_Sans_JP({ subsets: ['latin'], display: 'swap', variable: '--font-sans' });
 const kosugi = Kosugi_Maru({ weight: '400', subsets: ['latin'], display: 'swap', variable: '--font-rounded' });
 
-export const metadata: Metadata = {
+export const metadata = {
   title: 'Sensee - 先生のための画像素材',
   description: '生成AIでつくる、安心して使える教育画像素材サイト',
+  openGraph: {
+    title: 'Sensee - 先生のための画像素材',
+    description: '生成AIでつくる、安心して使える教育画像素材サイト',
+    url: 'https://sensee.site',
+    siteName: 'Sensee',
+    images: [
+      {
+        url: 'https://sensee.site/logo.png',
+        width: 1200,
+        height: 630,
+      },
+    ],
+    locale: 'ja_JP',
+    type: 'website',
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
