@@ -6,7 +6,6 @@ import CategoryList from '@/components/CategoryList';
 import ImageCard from '@/components/ImageCard';
 import { ImageType, Category, Tag } from '@/types';
 import Link from 'next/link';
-import { ReadonlyURLSearchParams } from 'next/navigation';
 
 const PER_PAGE = 60;
 const API_LIMIT = 100;
@@ -72,9 +71,9 @@ export default function ClientPage({ searchParams }: Props) {
 
       setIsLoading(false);
     };
-
+    
     fetchData();
-  }, [category, tagParams.join(','), page, offset]);
+  }, [category, tagParams, page]);
 
   const totalPages = Math.ceil(totalCount / PER_PAGE);
 
