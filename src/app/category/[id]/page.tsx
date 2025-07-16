@@ -12,20 +12,11 @@ type ImageType = {
   usage?: string | string[];
 };
 
-type PageProps = {
+export default async function CategoryPage({
+  params,
+}: {
   params: { id: string };
-};
-
-export function generateStaticParams() {
-  // 必要に応じて静的生成するカテゴリIDを返す
-  return [];
-}
-
-export default function CategoryPageWrapper(props: PageProps) {
-  return <CategoryPage {...props} />;
-}
-
-async function CategoryPage({ params }: PageProps) {
+}) {
   const { id } = params;
 
   const category = await client.get({ endpoint: 'categories', contentId: id });
