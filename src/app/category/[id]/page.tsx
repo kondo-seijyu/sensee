@@ -1,6 +1,7 @@
 import { client } from '@/libs/client';
 import Link from 'next/link';
 import Image from 'next/image';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 
 export const dynamic = 'force-dynamic';
 
@@ -14,13 +15,13 @@ type ImageType = {
   usage?: string | string[];
 };
 
-// 👇これが重要！型を NextPage にあわせて統一！
-interface PageProps {
-  params: { id: string };
-}
+type Props = {
+  category: { id: string; name: string };
+  images: ImageType[];
+};
 
-export default async function CategoryPage({ params }: PageProps) {
-  const { id } = params;
+export const getServerSideProps: GetServerSideProps<Props> = async (context) => {
+  const { id } = context.params as { id: string };
 
   const category = await client.get({ endpoint: 'categories', contentId: id });
   const data = await client.get({
@@ -28,11 +29,20 @@ export default async function CategoryPage({ params }: PageProps) {
     queries: { filters: `category[equals]${id}` },
   });
 
+  return {
+    props: {
+      category,
+      images: data.contents,
+    },
+  };
+};
+
+export default function CategoryPage({ category, images }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
     <main className="p-8">
       <h1 className="text-xl font-bold mb-4">カテゴリ: {category.name}</h1>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {data.contents.map((item: ImageType) => (
+        {images.map((item) => (
           <div key={item.id} className="bg-white p-2 rounded shadow">
             <Link href={`/images/${item.id}`}>
               <Image
