@@ -12,7 +12,7 @@ const PER_PAGE = 60;
 const API_LIMIT = 100;
 
 type Props = {
-  searchParams: ReadonlyURLSearchParams;
+  searchParams: URLSearchParams;
 };
 
 export default function ClientPage({ searchParams }: Props) {
