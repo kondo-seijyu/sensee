@@ -147,7 +147,7 @@ export default function HomePage() {
         <div>
           <Link href="/chat-search" passHref>
             <button className="bg-[#A7D8DE] text-white font-semibold py-2 px-6 rounded-full shadow transition-all duration-200 ease-in-out hover:scale-[1.03] hover:shadow-lg hover:bg-opacity-90 text-sm cursor-pointer">
-              Sensee AIとお話ししてみる
+              &quot;Sensee AI&quot;とお話ししてみる
             </button>
           </Link>
         </div>
@@ -234,7 +234,7 @@ export default function HomePage() {
         <div className="mx-auto">
           <p className="text-gray-700 leading-relaxed text-base whitespace-pre-line">
             Sensee（センシー）は、
-            <span className="bg-yellow-200 px-1 rounded-sm">先生の“見せたい”をやさしく支える</span>
+            <span className="bg-yellow-200 px-1 rounded-sm">先生の&quot;見せたい&quot;をやさしく支える</span>
             画像素材サイトです。<br />
             保育・教育現場にぴったりな画像を、
             <span className="bg-yellow-200 px-1 rounded-sm">あいまいなことばでもAIが見つけてくれる</span>
@@ -280,7 +280,7 @@ export default function HomePage() {
       </section>
 
       <section className="text-center px-4 py-16 bg-[#F9FAFB]">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6 font-rounded">"Sensee AI"とは？</h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-6 font-rounded">&quot;Sensee AI&quot;とは？</h2>
         <div className="max-w-3xl mx-auto text-gray-700 leading-relaxed text-base space-y-4">
           <p>
             「どんな画像を探せばいいか分からない…」そんな時は、
@@ -294,7 +294,7 @@ export default function HomePage() {
 
           <Link href="/chat-search">
             <button className="bg-[#A7D8DE] text-white font-semibold py-2 px-6 rounded-full shadow transition-all duration-200 ease-in-out hover:scale-[1.03] hover:shadow-lg hover:bg-opacity-90 text-sm cursor-pointer">
-              Sensee AIとお話してみる
+              &quot;Sensee AI&quot;とお話してみる
             </button>
           </Link>
         </div>
