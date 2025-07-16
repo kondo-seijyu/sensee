@@ -11,13 +11,15 @@ const PER_PAGE = 60;
 const API_LIMIT = 100;
 
 type Props = {
-  searchParams: URLSearchParams;
+  searchParams: string;
 };
 
 export default function ClientPage({ searchParams }: Props) {
-  const page = Number(searchParams.get('page') || '1');
-  const category = searchParams.get('category') || '';
-  const tagParams = searchParams.getAll('tags');
+  const params = new URLSearchParams(searchParams);
+
+  const page = Number(params.get('page') || '1');
+  const category = params.get('category') || '';
+  const tagParams = params.getAll('tags');
 
   const [images, setImages] = useState<ImageType[]>([]);
   const [totalCount, setTotalCount] = useState(0);
