@@ -2,7 +2,7 @@ import { client } from '@/libs/client';
 import Link from 'next/link';
 import Image from 'next/image';
 
-export const dynamic = 'force-dynamic'; // SSR 相当
+export const dynamic = 'force-dynamic';
 
 type ImageType = {
   id: string;
@@ -14,11 +14,12 @@ type ImageType = {
   usage?: string | string[];
 };
 
-type PageProps = {
+// 型を明示して、暗黙の any を排除
+export default async function CategoryPage({
+  params,
+}: {
   params: { id: string };
-};
-
-export default async function CategoryPage({ params }: PageProps) {
+}) {
   const { id } = params;
 
   const category = await client.get({ endpoint: 'categories', contentId: id });
@@ -44,6 +45,7 @@ export default async function CategoryPage({ params }: PageProps) {
             </Link>
             <h2 className="text-sm font-semibold mt-2">{item.title}</h2>
             <p className="text-xs text-gray-600">{item.description}</p>
+
             {item.tags && (
               <div className="mt-2 flex flex-wrap gap-1 text-xs text-blue-600">
                 {item.tags.map((tag) => (
@@ -53,6 +55,7 @@ export default async function CategoryPage({ params }: PageProps) {
                 ))}
               </div>
             )}
+
             {item.category && (
               <div className="mt-1 text-xs text-green-600">
                 <Link href={`/category/${item.category.id}`} className="hover:underline">
@@ -60,6 +63,7 @@ export default async function CategoryPage({ params }: PageProps) {
                 </Link>
               </div>
             )}
+
             {item.usage && (
               <div className="mt-1 text-xs text-purple-600">
                 用途：{Array.isArray(item.usage) ? item.usage.join('・') : item.usage}
