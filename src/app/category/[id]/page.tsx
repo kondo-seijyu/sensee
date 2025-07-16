@@ -14,14 +14,9 @@ type ImageType = {
   usage?: string | string[];
 };
 
-type PageProps = {
-  params: {
-    id: string;
-  };
-};
-
-export default async function CategoryPage({ params }: PageProps) {
-  const { id } = params;
+// @ts-ignore: Next.js内部のPageProps型とのparams型の衝突を回避
+export default async function CategoryPage(props: any) {
+  const id = props.params.id;
 
   const category = await client.get({ endpoint: 'categories', contentId: id });
   const data = await client.get({
