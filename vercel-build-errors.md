@@ -148,3 +148,13 @@ export default async function Page(props: any) {
 ### 対応
 - Option B に戻す
 - `any + as` 構成で確実に通るように修正
+
+## ✅ [2025-07-16] ESLint no-explicit-any 対策としてルール無効コメントを追加
+
+### 対応
+現状 Next.js 15 の型定義が安定せず、正確な型指定をすると PageProps と整合せずビルドエラーとなる。
+そのため、TypeScriptの厳密さより「動くコード優先」で any を許容する一時的対応。
+
+```tsx
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default async function Page(props: any) {
