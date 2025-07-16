@@ -20,10 +20,10 @@ export default function ImageCard({ item }: { item: ImageCardProps["item"] }) {
     <div className="rounded-2xl overflow-hidden bg-white shadow hover:shadow-md transition text-center w-[150px]">
       <Link href={`/images/${item.id}`}>
         <Image
-          src={item.image.url}
+          src={item.image?.url || '/noimage.png'}
           alt={item.title}
-          width={item.image.width}
-          height={item.image.height}
+          width={item.image?.width || 400}
+          height={item.image?.height || 300}
           className="object-cover w-full h-auto hover:opacity-80 transition"
           priority
           placeholder="blur"
