@@ -9,25 +9,28 @@ import Link from 'next/link';
 
 const PER_PAGE = 60;
 const API_LIMIT = 100;
-
-type Props = {
-  searchParams: Record<string, string | string[]>;
-};
-
-export default function ClientPage({ searchParams }: Props) {
+const buildSearchParams = (params: Record<string, string | string[]>) => {
   const q = new URLSearchParams();
-  for (const key in searchParams) {
-    const val = searchParams[key];
+  for (const key in params) {
+    const val = params[key];
     if (Array.isArray(val)) {
       val.forEach(v => q.append(key, v));
     } else {
       q.set(key, val);
     }
   }
+  return q;
+};
+
+type Props = {
+  searchParams: Record<string, string | string[]>;
+};
+
+export default function ClientPage({ searchParams }: Props) {
+  const q = buildSearchParams(searchParams);
   const page = Number(q.get('page') || '1');
   const category = q.get('category') || '';
   const tagParams = q.getAll('tags');
-
   const [images, setImages] = useState<ImageType[]>([]);
   const [totalCount, setTotalCount] = useState(0);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -86,30 +89,33 @@ export default function ClientPage({ searchParams }: Props) {
 
   const totalPages = Math.ceil(totalCount / PER_PAGE);
 
-  const buildTagQuery = (tagId: string) => {
-    const q = new URLSearchParams(searchParams.toString());
-    const updated = tagParams.includes(tagId)
-      ? tagParams.filter(t => t !== tagId)
-      : [...tagParams, tagId];
-    q.delete('tags');
-    updated.forEach(t => q.append('tags', t));
-    if (page > 1) q.set('page', page.toString());
-    else q.delete('page');
-    return `/images?${q.toString()}`;
-  };
+ const buildTagQuery = (tagId: string) => {
+  const q = buildSearchParams(searchParams);
+  const updated = tagParams.includes(tagId)
+    ? tagParams.filter(t => t !== tagId)
+    : [...tagParams, tagId];
 
-  const buildPageQuery = (pn: number) => {
-    const q = new URLSearchParams(searchParams.toString());
-    if (pn > 1) q.set('page', pn.toString());
-    else q.delete('page');
-    return `/images?${q.toString()}`;
-  };
+  q.delete('tags');
+  updated.forEach(t => q.append('tags', t));
+  if (page > 1) q.set('page', page.toString());
+  else q.delete('page');
 
-  const clearTagsQuery = () => {
-    const q = new URLSearchParams(searchParams.toString());
-    q.delete('tags');
-    return `/images?${q.toString()}`;
-  };
+  return `/images?${q.toString()}`;
+};
+
+const buildPageQuery = (pn: number) => {
+  const q = buildSearchParams(searchParams);
+  if (pn > 1) q.set('page', pn.toString());
+  else q.delete('page');
+
+  return `/images?${q.toString()}`;
+};
+
+const clearTagsQuery = () => {
+  const q = buildSearchParams(searchParams);
+  q.delete('tags');
+  return `/images?${q.toString()}`;
+};
 
   return (
     <main className="max-w-[1040px] mx-auto px-4 py-16 space-y-10 font-sans">

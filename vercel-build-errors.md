@@ -158,3 +158,36 @@ export default async function Page(props: any) {
 ```tsx
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default async function Page(props: any) {
+
+画像一覧が出ない不具合
+
+# ✅ 対応ログ（2025-07-16）
+
+## ❌ `searchParams` 型エラー（TypeScript）
+
+### エラー内容
+```ts
+Type 'Record<string, string | string[]>' の引数を型 'string | string[][] | Record<string, string> | URLSearchParams | undefined' のパラメーターに割り当てることはできません
+
+原因
+	•	URLSearchParams に Record<string, string | string[]> を直接渡すと型エラーになる（string[] が含まれるため Record<string, string> に適合しない）。
+
+  ✅ 対応内容
+
+修正前
+const q = new URLSearchParams(searchParams); // ❌ 型エラー
+
+修正後
+
+const q = new URLSearchParams();
+for (const key in searchParams) {
+  const val = searchParams[key];
+  if (Array.isArray(val)) {
+    val.forEach(v => q.append(key, v));
+  } else {
+    q.set(key, val);
+  }
+}
+
+	•	tags=cat&tags=dog のような複数パラメータに対応
+	•	型の整合性を保ち、Vercel/TypeScript ビルドを両立
