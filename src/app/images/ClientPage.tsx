@@ -1,6 +1,5 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { client } from '@/libs/client';
 import CategoryList from '@/components/CategoryList';
@@ -75,7 +74,7 @@ export default function ClientPage({ searchParams }: Props) {
     };
 
     fetchData();
-  }, [category, tagParams.join(','), page]);
+  }, [category, tagParams.join(','), page, offset]);
 
   const totalPages = Math.ceil(totalCount / PER_PAGE);
 
