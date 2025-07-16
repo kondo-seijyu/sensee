@@ -83,3 +83,58 @@ export default async function Page(
   const urlSearchParams = new URLSearchParams();
   // ...
 }
+
+## 🔁 [2025-07-16] PageProps 未存在による VS Code 型エラー対応
+
+### エラー内容
+モジュール ‘“next/navigation”’ にエクスポートされたメンバー ‘PageProps’ がありません。
+
+### 原因
+`next/navigation` に `PageProps` が定義されておらず、VS Code／TSで型が見つからない。
+
+### 対応策
+- ❗ Option A：`props: { searchParams: Promise<...> }` として await 展開する
+- ✅ Option B：`any` で受け、`as { searchParams: Record<...> }` でキャスト（時短）
+
+### （Option A：Promise受け→await展開）
+
+import ClientPage from './ClientPage';
+
+export default async function Page(
+  props: Promise<{ searchParams: Record<string, string | string[]> }>
+) {
+  const { searchParams } = await props;
+
+  const urlSearchParams = new URLSearchParams();
+
+  for (const key in searchParams) {
+    const val = searchParams[key];
+    if (Array.isArray(val)) {
+      val.forEach(v => urlSearchParams.append(key, v));
+    } else {
+      urlSearchParams.set(key, val);
+    }
+  }
+
+  return <ClientPage searchParams={urlSearchParams} />;
+}
+
+## ✅ [2025-07-16] Option A失敗 → Option Bでキャストに切替
+
+### エラー内容
+Page “src/app/images/page.tsx” has an invalid “default” export:
+Type “Promise<…>” is not valid.
+
+### 原因
+Promise型のpropsを使った構成がNext.jsでサポートされていない
+
+### 対応策
+- props を `any` で受け（型を曖昧化）、
+- `as { searchParams: Record<...> }` で必要な型を得る構成に変更
+
+### 修正コード
+```tsx
+export default async function Page(props: any) {
+  const { searchParams } = props as { searchParams: Record<string, string | string[]> };
+  // ...
+}
