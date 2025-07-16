@@ -14,14 +14,15 @@ type ImageType = {
   usage?: string | string[];
 };
 
-// ✅ 型定義を明示せずに、params をそのまま受ける！
-export default async function CategoryPage({ params }: { params: { id: string } }) {
-  const { id } = params;
+export default async function CategoryPage(props: { params: { id: string } }) {
+  const category = await client.get({
+    endpoint: 'categories',
+    contentId: props.params.id,
+  });
 
-  const category = await client.get({ endpoint: 'categories', contentId: id });
   const data = await client.get({
     endpoint: 'images',
-    queries: { filters: `category[equals]${id}` },
+    queries: { filters: `category[equals]${props.params.id}` },
   });
 
   return (
