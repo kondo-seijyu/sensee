@@ -1,19 +1,15 @@
 import ClientPage from './ClientPage';
 
-type Props = {
-  searchParams: { [key: string]: string | string[] | undefined };
-};
-
-export default function ImagePageWrapper({ searchParams }: Props) {
-  const sp = new URLSearchParams();
-
-  Object.entries(searchParams).forEach(([key, value]) => {
-    if (Array.isArray(value)) {
-      value.forEach(v => sp.append(key, v));
-    } else if (value) {
-      sp.set(key, value);
+export default function Page({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) {
+  const urlSearchParams = new URLSearchParams();
+  for (const key in searchParams) {
+    const val = searchParams[key];
+    if (Array.isArray(val)) {
+      val.forEach(v => urlSearchParams.append(key, v));
+    } else if (val !== undefined) {
+      urlSearchParams.set(key, val);
     }
-  });
+  }
 
-  return <ClientPage key={sp.toString()} searchParams={sp} />;
+  return <ClientPage searchParams={urlSearchParams} />;
 }

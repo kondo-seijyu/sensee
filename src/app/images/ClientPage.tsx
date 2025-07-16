@@ -71,9 +71,9 @@ export default function ClientPage({ searchParams }: Props) {
 
       setIsLoading(false);
     };
-    
+
     fetchData();
-  }, [category, tagParams, page]);
+  }, [category, tagParams, page, offset]);
 
   const totalPages = Math.ceil(totalCount / PER_PAGE);
 
