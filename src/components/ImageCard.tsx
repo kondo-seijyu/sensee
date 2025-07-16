@@ -26,10 +26,10 @@ export default function ImageCard({ item }: { item: ImageCardProps["item"] }) {
       <Link href={`/images/${item.id}`}>
         {hasImage ? (
           <Image
-            src={item.image.url}
+            src={item.image.url as string}
             alt={item.title}
-            width={item.image.width}
-            height={item.image.height}
+            width={item.image.width || 400}
+            height={item.image.height || 300}
             className="object-cover w-full h-auto hover:opacity-80 transition"
             priority
             placeholder="blur"
