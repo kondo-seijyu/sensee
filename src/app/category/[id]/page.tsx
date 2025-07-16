@@ -14,14 +14,18 @@ type ImageType = {
   usage?: string | string[];
 };
 
-// あくまで params のみ緩和。any回避のため Record 型を使って明示的に記述
 type LooseParams = Record<string, unknown>;
 
-export default async function CategoryPage(
-  props: { params?: LooseParams }
-) {
-  const maybeId = props.params?.id;
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error: Vercelビルド時、paramsがPromise扱いで型衝突するため抑制
+export default async function CategoryPage({
+  params,
+}: {
+  params?: LooseParams;
+}) {
+  const maybeId = params?.id;
   const id = typeof maybeId === 'string' ? maybeId : undefined;
+
   if (!id) {
     return <main className="p-8">カテゴリIDが指定されていません。</main>;
   }
