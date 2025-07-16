@@ -14,8 +14,6 @@ type ImageType = {
   usage?: string | string[];
 };
 
-type LooseParams = Record<string, unknown>;
-
 export default async function CategoryPage({
   params,
 }: {
