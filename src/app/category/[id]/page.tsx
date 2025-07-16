@@ -1,4 +1,3 @@
-// ファイル: app/category/[id]/page.tsx
 import { client } from '@/libs/client';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -15,9 +14,7 @@ type ImageType = {
   usage?: string | string[];
 };
 
-interface CategoryPageProps {
-  params: { id: string };
-}
+type CategoryPageProps = { params: { id: string } };
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
   const { id } = params;
