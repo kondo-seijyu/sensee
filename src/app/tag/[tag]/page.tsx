@@ -1,10 +1,10 @@
 import { redirect } from 'next/navigation';
 
-type Props = {
-  params: { tag: string };
-};
-
-export default function TagPage({ params }: Props) {
-  const { tag } = params;
+export default async function TagPage({
+  params,
+}: {
+  params: Promise<{ tag: string }>;
+}) {
+  const { tag } = await params;
   redirect(`/images?tags=${encodeURIComponent(tag)}`);
 }
