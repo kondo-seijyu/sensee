@@ -11,15 +11,22 @@ const PER_PAGE = 60;
 const API_LIMIT = 100;
 
 type Props = {
-  searchParams: string;
+  searchParams: Record<string, string | string[]>;
 };
 
 export default function ClientPage({ searchParams }: Props) {
-  const params = new URLSearchParams(searchParams);
-
-  const page = Number(params.get('page') || '1');
-  const category = params.get('category') || '';
-  const tagParams = params.getAll('tags');
+  const q = new URLSearchParams();
+  for (const key in searchParams) {
+    const val = searchParams[key];
+    if (Array.isArray(val)) {
+      val.forEach(v => q.append(key, v));
+    } else {
+      q.set(key, val);
+    }
+  }
+  const page = Number(q.get('page') || '1');
+  const category = q.get('category') || '';
+  const tagParams = q.getAll('tags');
 
   const [images, setImages] = useState<ImageType[]>([]);
   const [totalCount, setTotalCount] = useState(0);
