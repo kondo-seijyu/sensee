@@ -1,11 +1,9 @@
 import ClientPage from './ClientPage';
 
-type Props = {
-  searchParams?: { [key: string]: string | string[] };
-};
-
-export default function Page({ searchParams = {} }: Props) {
+export default async function Page({ searchParams }: { searchParams: Record<string, string | string[]> }) {
+  // searchParams は Promise ではなく、既に解決済みの型。
   const urlSearchParams = new URLSearchParams();
+
   for (const key in searchParams) {
     const val = searchParams[key];
     if (Array.isArray(val)) {
