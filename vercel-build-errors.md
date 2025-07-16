@@ -138,3 +138,13 @@ export default async function Page(props: any) {
   const { searchParams } = props as { searchParams: Record<string, string | string[]> };
   // ...
 }
+
+## ❌ [2025-07-16] Option A再使用による型エラー再発（戻ってしまった）
+
+### 状況
+- `props: { searchParams: ... }` と明示的に指定（Option A）
+- → 前回と同様の型不一致で `PageProps` の制約に合わずエラー
+
+### 対応
+- Option B に戻す
+- `any + as` 構成で確実に通るように修正
