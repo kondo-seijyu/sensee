@@ -14,15 +14,17 @@ type ImageType = {
   usage?: string | string[];
 };
 
-export default async function CategoryPage(props: { params: { id: string } }) {
-  const category = await client.get({
-    endpoint: 'categories',
-    contentId: props.params.id,
-  });
+export default async function CategoryPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const { id } = params;
 
+  const category = await client.get({ endpoint: 'categories', contentId: id });
   const data = await client.get({
     endpoint: 'images',
-    queries: { filters: `category[equals]${props.params.id}` },
+    queries: { filters: `category[equals]${id}` },
   });
 
   return (
