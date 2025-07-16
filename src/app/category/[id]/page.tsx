@@ -2,6 +2,8 @@ import { client } from '@/libs/client';
 import Link from 'next/link';
 import Image from 'next/image';
 
+export const dynamic = 'force-dynamic'; // 👈 これを追加！
+
 type ImageType = {
   id: string;
   title: string;
