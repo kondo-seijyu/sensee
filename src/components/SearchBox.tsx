@@ -8,8 +8,11 @@ export default function SearchBox() {
   const router = useRouter();
 
   const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && keyword.trim()) {
-      router.push(`/search?keyword=${encodeURIComponent(keyword.trim())}`);
+    if (e.key === 'Enter') {
+      const trimmed = keyword.trim();
+      if (trimmed) {
+        router.push(`/search?keyword=${encodeURIComponent(trimmed)}`);
+      }
     }
   };
 
@@ -23,6 +26,7 @@ export default function SearchBox() {
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
         onKeyDown={handleSearch}
+        aria-label="画像検索"
       />
     </div>
   );

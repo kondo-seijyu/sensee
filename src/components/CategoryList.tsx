@@ -15,28 +15,35 @@ export default function CategoryList({
 
   const handleClick = (id: string) => {
     const newParams = new URLSearchParams(params.toString());
+
     if (id === selected) {
       newParams.delete('category');
     } else {
       newParams.set('category', id);
       newParams.set('page', '1');
     }
+
     router.replace(`/images?${newParams.toString()}`);
   };
 
   return (
     <div className="flex flex-wrap gap-3 text-blue-600 text-sm">
-      {categories.map((cat) => (
-        <button
-          key={cat.id}
-          onClick={() => handleClick(cat.id)}
-          className={`hover:underline ${
-            selected === cat.id ? 'font-bold underline' : ''
-          }`}
-        >
-          {cat.name}
-        </button>
-      ))}
+      {categories.map((cat) => {
+        const isSelected = selected === cat.id;
+
+        return (
+          <button
+            key={cat.id}
+            onClick={() => handleClick(cat.id)}
+            className={`hover:underline ${
+              isSelected ? 'font-bold underline' : ''
+            }`}
+            aria-pressed={isSelected}
+          >
+            {cat.name}
+          </button>
+        );
+      })}
     </div>
   );
 }

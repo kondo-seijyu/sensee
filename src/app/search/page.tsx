@@ -19,14 +19,11 @@ type ImageType = {
 };
 
 type Props = {
-  searchParams: Promise<{ q?: string }>;
+  searchParams: { q?: string };
 };
 
-export default async function SearchPage({
-  searchParams,
-}: Props) {
-  const { q: keyword = '' } = await searchParams;
-
+export default async function SearchPage({ searchParams }: Props) {
+  const keyword = searchParams.q || '';
   const data = await client.get({
     endpoint: 'images',
     queries: {

@@ -8,17 +8,17 @@ export default function AboutPage() {
         <h2 className="text-lg font-bold font-rounded text-gray-800">Senseeの想い</h2>
         <p className="text-gray-600 text-sm">せんせいの“見せたい”をやさしく支える。</p>
         <p className="text-gray-600 text-sm">安心して使える画像は、センシーにまかせて。</p>
-        <p className="text-gray-700 text-sm leading-relaxed">
-          先生たちは日々、配布物やプリント、ポップの作成など<br />
+        <p className="text-gray-700 text-sm leading-relaxed whitespace-pre-line">
+          先生たちは日々、配布物やプリント、ポップの作成など
           “見せるための工夫”を求められていると思います。
         </p>
-        <p className="text-gray-700 text-sm leading-relaxed">
-          でも——<br />
-          著作権や肖像権の不安、検索の難しさ、素材探しの手間。<br />
+        <p className="text-gray-700 text-sm leading-relaxed whitespace-pre-line">
+          でも——
+          著作権や肖像権の不安、検索の難しさ、素材探しの手間。
           それらは決して本来の仕事ではないのに、時間を奪ってしまっている。
         </p>
-        <p className="text-gray-700 text-sm leading-relaxed">
-          Sensee（センシー）は、「安心して使える画像」を届ける、<br />
+        <p className="text-gray-700 text-sm leading-relaxed whitespace-pre-line">
+          Sensee（センシー）は、「安心して使える画像」を届ける、
           やさしい相棒のような存在になるはずです。
         </p>
       </section>
@@ -49,17 +49,16 @@ export default function AboutPage() {
           <li>公序良俗に反する用途</li>
         </ul>
       </section>
-
-      {/* フッター補足 */}
-      <p className="text-sm text-gray-500 text-center leading-relaxed">
-        本サービスは現在ベータ版です。<br />
-        ご意見・ご要望などがあれば、お気軽にお問い合わせフォームからお知らせください。
+      <p className="text-sm text-gray-500 text-center leading-relaxed whitespace-pre-line">
+        {`本サービスは現在ベータ版です。
+        ご意見・ご要望などがあれば、お気軽にお問い合わせフォームからお知らせください。`}
       </p>
-
-      {/* 戻るボタン */}
       <div className="text-center">
-        <Link href="../contact" passHref>
-          <button className="bg-[#A7D8DE] text-white font-semibold py-2 px-6 rounded-full shadow transition-all duration-200 ease-in-out hover:scale-[1.03] hover:shadow-lg hover:bg-opacity-90 text-sm cursor-pointer">
+        <Link href="/contact">
+          <button
+            type="button"
+            className="bg-[#A7D8DE] text-white font-semibold py-2 px-6 rounded-full shadow transition-all duration-200 ease-in-out hover:scale-[1.03] hover:shadow-lg hover:bg-opacity-90 text-sm cursor-pointer"
+          >
             お問い合わせはこちら
           </button>
         </Link>

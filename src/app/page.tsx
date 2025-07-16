@@ -5,6 +5,8 @@ import { client } from '@/libs/client';
 import Link from 'next/link';
 import Image from 'next/image';
 
+// 型定義
+
 type ImageType = {
   id: string;
   title: string;
@@ -35,16 +37,41 @@ export default function HomePage() {
   const [showAllTags, setShowAllTags] = useState(false);
 
   useEffect(() => {
-    (async () => {
+    const getSeasonTagId = () => {
+      const month = new Date().getMonth() + 1;
+      if ([3, 4, 5].includes(month)) return 'spring';
+      if ([6, 7, 8].includes(month)) return 'summer';
+      if ([9, 10, 11].includes(month)) return 'autumn';
+      return 'winter';
+    };
+
+    const fetchInitialData = async () => {
       try {
-        const res = await client.get({
-          endpoint: 'images',
-          queries: { limit: 12, orders: '-publishedAt' },
-        });
-        setData(res.contents);
+        const [latest, seasonal, rankingRes, catTag] = await Promise.all([
+          client.get({ endpoint: 'images', queries: { limit: 12, orders: '-publishedAt' } }),
+          client.get({
+            endpoint: 'images',
+            queries: {
+              filters: `tags[contains]${getSeasonTagId()}`,
+              limit: 6,
+              orders: '-_sys.updatedAt',
+            },
+          }),
+          fetch('/api/ranking').then((res) => res.json()),
+          Promise.all([
+            client.get({ endpoint: 'categories', queries: { limit: 20 } }),
+            client.get({ endpoint: 'tags', queries: { limit: 50 } }),
+          ]),
+        ]);
+
+        setData(latest.contents);
+        setSeasonalData(seasonal.contents);
+        setRankingData(rankingRes.slice(0, 6));
+        setCategories(catTag[0].contents);
+        setTags(catTag[1].contents);
 
         const tagCountMap: Record<string, { name: string; count: number }> = {};
-        res.contents.forEach((img: any) => {
+        latest.contents.forEach((img: any) => {
           img.tags?.forEach((tag: any) => {
             if (!tagCountMap[tag.id]) {
               tagCountMap[tag.id] = { name: tag.name, count: 1 };
@@ -61,62 +88,11 @@ export default function HomePage() {
 
         setTopTags(sorted);
       } catch (err) {
-        console.error('Fetch error:', err);
-      }
-    })();
-  }, []);
-
-  useEffect(() => {
-    const getSeasonTagId = () => {
-      const month = new Date().getMonth() + 1;
-      if ([3, 4, 5].includes(month)) return 'spring';
-      if ([6, 7, 8].includes(month)) return 'summer';
-      if ([9, 10, 11].includes(month)) return 'autumn';
-      return 'winter';
-    };
-
-    const fetchSeasonalImages = async () => {
-      const seasonTagId = getSeasonTagId();
-      try {
-        const res = await client.get({
-          endpoint: 'images',
-          queries: {
-            filters: `tags[contains]${seasonTagId}`,
-            limit: 6,
-            orders: '-_sys.updatedAt',
-          },
-        });
-        setSeasonalData(res.contents);
-      } catch (err) {
-        console.error('季節画像の取得に失敗:', err);
+        console.error('初期データの取得に失敗:', err);
       }
     };
 
-    fetchSeasonalImages();
-  }, []);
-
-  useEffect(() => {
-    (async () => {
-      const res = await fetch('/api/ranking');
-      const json = await res.json();
-      setRankingData(json.slice(0, 6));
-    })();
-  }, []);
-
-  useEffect(() => {
-    const fetchCategoriesAndTags = async () => {
-      try {
-        const catRes = await client.get({ endpoint: 'categories', queries: { limit: 20 } });
-        setCategories(catRes.contents);
-
-        const tagRes = await client.get({ endpoint: 'tags', queries: { limit: 50 } });
-        setTags(tagRes.contents);
-      } catch (err) {
-        console.error('カテゴリ・タグの取得に失敗:', err);
-      }
-    };
-
-    fetchCategoriesAndTags();
+    fetchInitialData();
   }, []);
 
   return (
@@ -352,7 +328,7 @@ export default function HomePage() {
           教育・保育現場に役立つ素材をどんどん追加していきます！
         </p>
         <Link href="/request">
-            <button className="bg-[#EAC67A] text-white font-semibold py-2 px-6 rounded-full shadow transition-all duration-200 ease-in-out hover:scale-[1.03] hover:shadow-lg hover:bg-opacity-90 text-sm cursor-pointer">
+          <button className="bg-[#EAC67A] text-white font-semibold py-2 px-6 rounded-full shadow transition-all duration-200 ease-in-out hover:scale-[1.03] hover:shadow-lg hover:bg-opacity-90 text-sm cursor-pointer">
             リクエストする
           </button>
         </Link>

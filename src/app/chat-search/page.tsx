@@ -90,17 +90,15 @@ export default function ChatSearchPage() {
         </p>
       </section>
       <section className="bg-[#F9FAFB] p-6 rounded-2xl shadow-card space-y-6">
-         <h2 className="text-lg font-bold font-rounded text-gray-800">Sensee AI</h2>
-               <p className="text-gray-600 text-sm leading-relaxed whitespace-pre-line">
+        <h2 className="text-lg font-bold font-rounded text-gray-800">Sensee AI</h2>
+        <p className="text-gray-600 text-sm leading-relaxed whitespace-pre-line">
           ベータ版のため少し画像検索に時間がかかる場合があります。気長に待ってね♪
         </p>
-                       <p className="text-gray-600 text-sm leading-relaxed whitespace-pre-line">
+        <p className="text-gray-600 text-sm leading-relaxed whitespace-pre-line">
           検索しても思った画像がなかったらリクエストお待ちしています！
         </p>
-        
-<div
-  className="min-h-[300px] max-h-[500px] overflow-y-auto mb-4 space-y-6 bg-[#A7D8DE] p-4 rounded transition-colors"
->
+
+        <div className="min-h-[300px] max-h-[500px] overflow-y-auto mb-4 space-y-6 bg-[#F0F8F8] p-4 rounded">
           {messages.map((msg, i) => (
             <div key={i} className={`space-y-2 ${msg.role === 'user' ? 'text-right' : 'text-left'}`}>
               {msg.role === 'bot' && (
@@ -143,7 +141,7 @@ export default function ChatSearchPage() {
         <form onSubmit={handleSubmit} className="flex gap-2">
           <input
             type="text"
-            className="flex-grow border rounded px-3 py-2"
+            className="flex-grow rounded-full px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-white"
             placeholder="探したい画像のニュアンスを入力してみてください。"
             value={input}
             onChange={(e) => setInput(e.target.value)}

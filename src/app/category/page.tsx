@@ -38,7 +38,7 @@ export default async function CategoryPage() {
             return (
               <Link
                 key={cat.id}
-                href={`/images?category=${cat.id}`}
+                href={`/category/${cat.id}`}
                 className="border rounded-xl p-4 flex flex-col items-center hover:shadow transition"
               >
                 {thumb ? (
@@ -47,7 +47,7 @@ export default async function CategoryPage() {
                     alt={cat.name}
                     width={120}
                     height={120}
-                    className="rounded mb-2 object-contain"
+                    className="rounded-x1 mb-2 bg-white"
                   />
                 ) : (
                   <div className="w-[120px] h-[120px] bg-gray-100 rounded mb-2 flex items-center justify-center">

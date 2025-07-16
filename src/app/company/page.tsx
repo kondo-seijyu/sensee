@@ -73,16 +73,16 @@ export default function CompanyPage() {
         <h2 className="text-xl font-bold font-rounded text-gray-800">制作実績</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
           <div className="rounded-2xl overflow-hidden shadow-card bg-white">
-            <Image src="/images/work1.png" alt="実績1" width={400} height={300} className="w-full h-auto object-cover" />
+            <Image src="/images/work1.png" alt="株式会社リフレクションのWebサイト" width={400} height={300} className="w-full h-auto object-cover" />
           </div>
           <div className="rounded-2xl overflow-hidden shadow-card bg-white">
-            <Image src="/images/work2.png" alt="実績2" width={400} height={300} className="w-full h-auto object-cover" />
+            <Image src="/images/work2.png" alt="日本酒にしようプロジェクトのECサイト" width={400} height={300} className="w-full h-auto object-cover" />
           </div>
           <div className="rounded-2xl overflow-hidden shadow-card bg-white">
-            <Image src="/images/work3.png" alt="実績3" width={400} height={300} className="w-full h-auto object-cover" />
+            <Image src="/images/work3.png" alt="株式会社DeepXのWebサイト" width={400} height={300} className="w-full h-auto object-cover" />
           </div>
           <div className="rounded-2xl overflow-hidden shadow-card bg-white">
-            <Image src="/images/work4.png" alt="実績4" width={400} height={300} className="w-full h-auto object-cover" />
+            <Image src="/images/work4.png" alt="ALPS税理士法人のリクルートサイト" width={400} height={300} className="w-full h-auto object-cover" />
           </div>
         </div>
       </section>

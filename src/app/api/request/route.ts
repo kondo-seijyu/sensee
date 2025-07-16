@@ -1,11 +1,11 @@
-// src/app/api/request/route.ts
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
     const { company = '-', name = '-', email = '-', request, purpose = '-' } = await req.json();
-    const safePurpose = purpose && purpose.trim() !== '' ? purpose : '（未記入）';
+
+    const safePurpose = purpose?.trim() !== '' ? purpose : '（未記入）';
 
     if (!request || request.trim() === '') {
       return NextResponse.json({ success: false, error: 'リクエスト内容は必須です。' }, { status: 400 });
@@ -52,7 +52,7 @@ ${safePurpose}
       `.trim(),
     });
 
-    // ユーザー宛 自動返信メール
+    // 自動返信メール（メールアドレス入力時のみ）
     if (email && email.includes('@')) {
       await transporter.sendMail({
         from: `"Sensee運営" <${process.env.SMTP_USER}>`,
@@ -89,8 +89,11 @@ https://sensee.site/
     }
 
     return NextResponse.json({ success: true });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('💥 リクエスト処理エラー:', error);
+    if (error instanceof Error) {
+      return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    }
     return NextResponse.json({ success: false, error: '送信に失敗しました。' }, { status: 500 });
   }
 }

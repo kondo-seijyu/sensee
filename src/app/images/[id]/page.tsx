@@ -108,6 +108,7 @@ function ImageDetailPage({ id }: { id: string }) {
               <Link
                 key={tag.id}
                 href={`/images?tags=${tag.id}`}
+                aria-label={`タグ ${tag.name} の画像一覧へ`}
                 className="text-sm text-blue-700 hover:underline"
               >
                 #{tag.name}

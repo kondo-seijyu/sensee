@@ -13,11 +13,11 @@ type ImageType = {
 };
 
 type PageProps = {
-  params: Promise<{ id: string }>;
+  params: { id: string };
 };
 
 export default async function CategoryPage({ params }: PageProps) {
-  const { id } = await params;
+  const { id } = params; // ここは同期的にOK
 
   const category = await client.get({ endpoint: 'categories', contentId: id });
   const data = await client.get({

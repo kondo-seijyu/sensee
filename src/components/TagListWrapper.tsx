@@ -8,21 +8,25 @@ import { Tag, ImageType } from '@/types';
 type Props = {
   tags: Tag[];
   images: ImageType[];
-  initialSelectedTagIds?: string[]; // ← ここがポイント
+  initialSelectedTagIds?: string[];
 };
 
-export default function TagListWrapper({ tags, images, initialSelectedTagIds = [] }: Props) {
+export default function TagListWrapper({
+  tags,
+  images,
+  initialSelectedTagIds = [],
+}: Props) {
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
   const [filteredImages, setFilteredImages] = useState<ImageType[]>([]);
   const [filteredTags, setFilteredTags] = useState<Tag[]>(tags);
 
-  // ✅ 初回マウント時に URL パラメータに応じた選択タグを反映
+  // 初回選択タグ反映
   useEffect(() => {
-    const matchedTags = tags.filter((tag) => initialSelectedTagIds.includes(tag.id));
-    setSelectedTags(matchedTags);
+    const matched = tags.filter((tag) => initialSelectedTagIds.includes(tag.id));
+    setSelectedTags(matched);
   }, [initialSelectedTagIds, tags]);
 
-  // タグ変更・画像更新時のフィルタ処理
+  // タグ変更時の画像・タグフィルタリング
   useEffect(() => {
     if (selectedTags.length === 0) {
       setFilteredImages(images);
@@ -30,44 +34,41 @@ export default function TagListWrapper({ tags, images, initialSelectedTagIds = [
       return;
     }
 
-    const newFilteredImages = images.filter((image) =>
+    const filtered = images.filter((image) =>
       selectedTags.every((tag) => image.tags?.some((t) => t.id === tag.id))
     );
-    setFilteredImages(newFilteredImages);
+    setFilteredImages(filtered);
 
-    const tagSet = new Set(
-      newFilteredImages.flatMap((image) => image.tags?.map((t) => t.id) || [])
+    const remainingTagIds = new Set(
+      filtered.flatMap((img) => img.tags?.map((t) => t.id) || [])
     );
-    const newFilteredTags = tags.filter((tag) => tagSet.has(tag.id));
-    setFilteredTags(newFilteredTags);
+    setFilteredTags(tags.filter((tag) => remainingTagIds.has(tag.id)));
   }, [selectedTags, images, tags]);
-
-  const handleTagChange = (newTags: Tag[]) => {
-    setSelectedTags(newTags);
-  };
-
-  const handleResetTags = () => {
-    setSelectedTags([]);
-  };
 
   return (
     <div>
-      <div className="flex flex-wrap gap-2 mb-4">
-        <button
-          onClick={handleResetTags}
-          className="border border-blue-500 text-blue-500 px-3 py-1 rounded hover:bg-blue-100 text-sm"
-        >
-          選択しているタグをリセット
-        </button>
-      </div>
+      {selectedTags.length > 0 && (
+        <div className="flex flex-wrap gap-2 mb-4">
+          <button
+            onClick={() => setSelectedTags([])}
+            className="border border-blue-500 text-blue-500 px-3 py-1 rounded hover:bg-blue-100 text-sm"
+          >
+            選択しているタグをリセット
+          </button>
+        </div>
+      )}
 
-      <TagList tags={filteredTags} selectedTags={selectedTags} onChange={handleTagChange} />
+      <TagList tags={filteredTags} selectedTags={selectedTags} onChange={setSelectedTags} />
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 mt-6">
-        {filteredImages.map((item) => (
-          <ImageCard key={item.id} item={item} />
-        ))}
-      </div>
+      {filteredImages.length === 0 ? (
+        <p className="text-center text-gray-500 mt-6">該当する画像がありません。</p>
+      ) : (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 mt-6">
+          {filteredImages.map((item) => (
+            <ImageCard key={item.id} item={item} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

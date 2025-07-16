@@ -22,8 +22,9 @@ export async function GET() {
       .sort((a, b) => (b.viewCount ?? 0) - (a.viewCount ?? 0));
 
     return NextResponse.json(sorted.slice(0, 10));
-  } catch (err) {
-    console.error('Error fetching ranking:', err);
-    return NextResponse.json({ error: 'Failed to fetch ranking' }, { status: 500 });
+  } catch (error: unknown) {
+    console.error('📉 ランキング取得エラー:', error);
+    const message = error instanceof Error ? error.message : 'Failed to fetch ranking';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

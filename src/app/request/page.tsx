@@ -13,6 +13,7 @@ export default function RequestPage() {
   const [purpose, setPurpose] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [requests, setRequests] = useState<RequestType[]>([]);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     (async () => {
@@ -25,7 +26,7 @@ export default function RequestPage() {
     e.preventDefault();
 
     if (!request.trim()) {
-      alert('リクエスト内容は必須です');
+      setError('リクエスト内容は必須です');
       return;
     }
 
@@ -44,12 +45,13 @@ export default function RequestPage() {
 
       if (res.ok) {
         setSubmitted(true);
+        setError('');
       } else {
-        alert('送信に失敗しました。時間をおいて再度お試しください。');
+        setError('送信に失敗しました。時間をおいて再度お試しください。');
       }
     } catch (error) {
       console.error('送信エラー:', error);
-      alert('送信時にエラーが発生しました。');
+      setError('送信時にエラーが発生しました。');
     }
   };
 
@@ -135,12 +137,18 @@ export default function RequestPage() {
             />
           </div>
           <div className="text-sm text-gray-500 text-center px-4">
-            ※ご入力いただいた内容は、サービス改善やご連絡に利用させていただく場合があります。<br />
-            ご記入のメールアドレス宛に返信させていただくこともございます。<br />
-            <Link href="/privacy" className="text-[#A7D8DE] underline hover:opacity-80 transition">
+            ご入力いただいた内容は、サービス改善やご連絡に利用させていただく場合があります。<br />
+            また、ご記入のメールアドレス宛に返信させていただくこともございます。<br />
+            詳しくは<Link href="/privacy" className="text-[#A7D8DE] underline hover:opacity-80 transition">
               プライバシーポリシー
             </Link>をご確認ください。
           </div>
+          {error && (
+            <p className="text-red-500 text-sm text-center">
+              {error}
+            </p>
+          )}
+
           <div className="text-center">
             <button
               type="submit"

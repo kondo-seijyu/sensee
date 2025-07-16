@@ -5,8 +5,8 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ScrollRestorer from '../components/ScrollRestorer';
 
-const noto = Noto_Sans_JP({ subsets: ['latin'], display: 'swap', variable: '--font-noto' });
-const kosugi = Kosugi_Maru({ weight: '400', subsets: ['latin'], display: 'swap', variable: '--font-kosugi' });
+const noto = Noto_Sans_JP({ subsets: ['latin'], display: 'swap', variable: '--font-sans' });
+const kosugi = Kosugi_Maru({ weight: '400', subsets: ['latin'], display: 'swap', variable: '--font-rounded' });
 
 export const metadata: Metadata = {
   title: 'Sensee - 先生のための画像素材',
@@ -19,7 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="font-sans text-gray-800">
         <ScrollRestorer />
         <Header />
-        <main className="mt-6 min-h-[calc(100vh-200px)]">{children}</main>
+        <main className="layout-main">{children}</main>
         <Footer />
       </body>
     </html>

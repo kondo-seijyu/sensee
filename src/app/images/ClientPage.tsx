@@ -94,37 +94,58 @@ export default function ClientPage() {
     return `/images?${q.toString()}`;
   };
 
+  const clearTagsQuery = () => {
+    const q = new URLSearchParams(searchParams.toString());
+    q.delete('tags');
+    return `/images?${q.toString()}`;
+  };
+
   return (
     <main className="max-w-[1040px] mx-auto px-4 py-16 space-y-10 font-sans">
-      <h1 className="text-2xl font-bold font-rounded text-gray-800">画像一覧
-      </h1>
+      <h1 className="text-2xl font-bold font-rounded text-gray-800">画像一覧</h1>
       <section className="bg-[#F6F4EB] p-6 rounded-2xl shadow-card space-y-4">
         <h2 className="text-lg font-bold font-rounded text-gray-800">カテゴリから探す</h2>
         <CategoryList categories={categories} selected={category} />
       </section>
-     <section className="bg-[#F9FAFB] p-6 rounded-2xl shadow-card space-y-4">        <h2 className="text-lg font-bold font-rounded text-gray-800">タグから探す</h2>
-           <div className="flex flex-wrap gap-2">
-        {tags.map(tag => {
-          const isSel = tagParams.includes(tag.id);
-          return (
+
+      <section className="bg-[#F9FAFB] p-6 rounded-2xl shadow-card space-y-4">
+        <h2 className="text-lg font-bold font-rounded text-gray-800">タグから探す</h2>
+        <div className="flex flex-wrap gap-2">
+          {tags.map(tag => {
+            const isSel = tagParams.includes(tag.id);
+            return (
+              <Link
+                key={tag.id}
+                href={buildTagQuery(tag.id)}
+                className={`px-2 py-1 text-sm rounded border flex items-center gap-1 ${isSel
+                  ? 'bg-blue-500 text-white'
+                  : 'text-blue-500 border-blue-500 hover:bg-blue-100'}
+                `}
+              >
+                #{tag.name}
+                {isSel && <span className="ml-1">×</span>}
+              </Link>
+            );
+          })}
+        </div>
+        {tagParams.length > 0 && (
+          <div className="mt-2">
             <Link
-              key={tag.id}
-              href={buildTagQuery(tag.id)}
-              className={`px-2 py-1 text-sm rounded border ${isSel
-                ? 'bg-blue-500 text-white'
-                : 'text-blue-500 border-blue-500 hover:bg-blue-100'
-                }`}
+              href={clearTagsQuery()}
+              className="text-sm text-red-500 underline hover:opacity-80"
             >
-              #{tag.name}
+              タグをすべて解除する
             </Link>
-          );
-        })}
-      </div>
+          </div>
+        )}
       </section>
 
-      <div className="grid grid-cols-2 md:grid-cols-4  xl:grid-cols-6 gap-4 my-8 justify-items-center">
+      <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-4 my-8 justify-items-center">
         {isLoading ? (
-          <p className="col-span-full text-center">読み込み中...</p>
+          <div className="col-span-full text-center flex flex-col items-center">
+            <span className="loader mb-2" />
+            <p>読み込み中...</p>
+          </div>
         ) : (
           images.map(item => <ImageCard key={item.id} item={item} />)
         )}
@@ -137,10 +158,11 @@ export default function ClientPage() {
             <Link
               key={pn}
               href={buildPageQuery(pn)}
+              aria-current={pn === page ? 'page' : undefined}
               className={`px-3 py-1 text-sm rounded border ${pn === page
                 ? 'bg-blue-500 text-white'
-                : 'bg-white text-blue-500 border-blue-500 hover:bg-blue-100'
-                }`}
+                : 'bg-white text-blue-500 border-blue-500 hover:bg-blue-100'}
+              `}
             >
               {pn}
             </Link>

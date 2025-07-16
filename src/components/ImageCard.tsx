@@ -1,16 +1,18 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
-type ImageCardProps = {
-  item: {
-    id: string;
-    title: string;
-    image: {
-      url: string;
-      width: number;
-      height: number;
-    };
+export type ImageCardItem = {
+  id: string;
+  title: string;
+  image: {
+    url: string;
+    width: number;
+    height: number;
   };
+};
+
+type ImageCardProps = {
+  item: ImageCardItem;
 };
 
 export default function ImageCard({ item }: { item: ImageCardProps["item"] }) {
@@ -23,6 +25,9 @@ export default function ImageCard({ item }: { item: ImageCardProps["item"] }) {
           width={item.image.width}
           height={item.image.height}
           className="object-cover w-full h-auto hover:opacity-80 transition"
+          priority
+          placeholder="blur"
+          blurDataURL="/placeholder.png"
         />
       </Link>
 

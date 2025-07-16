@@ -4,17 +4,28 @@ import { client } from '@/libs/client';
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
+type TagScore = {
+  tag: string;
+  score: number;
+};
+
+type TagItem = {
+  id: string;
+  tag: string;
+};
+
 export async function POST(request: Request) {
   try {
-    const { question } = await request.json();
+    const body = await request.json();
+    const question: string = body.question;
     console.log('🧠 ユーザー質問:', question);
 
-    // タグ一覧取得
     const tagMaster = await client.get({ endpoint: 'tags', queries: { limit: 100 } });
-    const tagList = tagMaster.contents.map((t: any) => t.tag);
-    const tagIdMap = Object.fromEntries(tagMaster.contents.map((t: any) => [t.tag, t.id]));
+    const tags = tagMaster.contents as TagItem[];
 
-    // GPTでタグ予測（スコア付き）
+    const tagList = tags.map((t) => t.tag);
+    const tagIdMap = Object.fromEntries(tags.map((t) => [t.tag, t.id]));
+
     const prompt = `以下はユーザーの質問です。この内容に関連しそうなタグを最大3つ選び、それぞれに0〜1のscoreをつけてJSON形式で返してください。
 スコアは「そのタグがどれだけ関係しそうか」を表してください。
 ※関係ないタグ（スコア0.5未満）は含めないようにしてください。
@@ -35,10 +46,10 @@ export async function POST(request: Request) {
     });
 
     const rawJson = gptRes.choices?.[0]?.message?.content || '[]';
-    let parsedTags: { tag: string; score: number }[] = [];
+    let parsedTags: TagScore[] = [];
 
     try {
-      parsedTags = JSON.parse(rawJson);
+      parsedTags = JSON.parse(rawJson) as TagScore[];
     } catch (e) {
       console.warn('⚠️ GPT出力のJSONパース失敗:', rawJson);
     }
@@ -69,7 +80,7 @@ export async function POST(request: Request) {
       },
     });
 
-    const formattedImages = data.contents.map((item: any) => ({
+    const formattedImages = (data.contents as any[]).map((item) => ({
       id: item.id,
       title: item.title,
       image: {
@@ -90,8 +101,9 @@ export async function POST(request: Request) {
       reply: 'おすすめの画像を見つけました！画像をクリックすると詳細ページにいくよ♪',
       images: formattedImages,
     });
-  } catch (error) {
-    console.error('❌ APIエラー:', error);
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Unknown error occurred';
+    console.error('❌ APIエラー:', message);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

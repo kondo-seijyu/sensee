@@ -24,8 +24,8 @@ export default function ContactPage() {
       alert('プライバシーポリシーに同意してください');
       return;
     }
-    if (!form.name || !form.email) {
-      alert('必須項目が未入力です');
+    if (!form.name || !form.email || !form.message) {
+      alert('必須項目（氏名・メールアドレス・お問い合わせ内容）をすべてご記入ください');
       return;
     }
 
@@ -82,7 +82,6 @@ export default function ContactPage() {
             />
           </div>
           <div>
-            <h2 className="text-lg font-bold font-rounded text-gray-800"></h2>
             <label className="block text-sm font-medium text-gray-700">
               氏名 <span className="text-red-500">*</span>
             </label>

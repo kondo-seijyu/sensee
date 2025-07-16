@@ -6,17 +6,33 @@
     --font-rounded: 'Kosugi Maru', sans-serif;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     @apply font-sans bg-white text-gray-800;
+  }
+
+  @layer components {
+  .layout-main {
+    @apply mt-6 min-h-[calc(100vh-200px)];
+  }
+}
+
+  *:focus-visible {
+    @apply ring-2 ring-blue-300 outline-none;
   }
 }
 
 @layer components {
+  /* 丸ゴ書体専用クラス */
   .font-rounded {
-    font-family: var(--font-rounded) !important;
+    font-family: var(--font-rounded);
   }
 
-  .test-text {
+  /* デバッグ用クラス。開発中に便利 */
+  .debug-text {
     @apply text-red-500;
   }
 }
