@@ -16,19 +16,30 @@ type ImageCardProps = {
 };
 
 export default function ImageCard({ item }: { item: ImageCardProps["item"] }) {
+  const hasImage =
+    item.image &&
+    typeof item.image.url === 'string' &&
+    item.image.url.startsWith('http');
+
   return (
     <div className="rounded-2xl overflow-hidden bg-white shadow hover:shadow-md transition text-center w-[150px]">
       <Link href={`/images/${item.id}`}>
-        <Image
-          src={item.image?.url || '/noimage.png'}
-          alt={item.title}
-          width={item.image?.width || 400}
-          height={item.image?.height || 300}
-          className="object-cover w-full h-auto hover:opacity-80 transition"
-          priority
-          placeholder="blur"
-          blurDataURL="/placeholder.png"
-        />
+        {hasImage ? (
+          <Image
+            src={item.image.url}
+            alt={item.title}
+            width={item.image.width}
+            height={item.image.height}
+            className="object-cover w-full h-auto hover:opacity-80 transition"
+            priority
+            placeholder="blur"
+            blurDataURL="/placeholder.png"
+          />
+        ) : (
+          <div className="w-full aspect-[4/3] bg-gray-100 flex items-center justify-center text-xs text-gray-400">
+            No Image
+          </div>
+        )}
       </Link>
 
       <p
