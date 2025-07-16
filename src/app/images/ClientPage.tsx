@@ -7,12 +7,16 @@ import CategoryList from '@/components/CategoryList';
 import ImageCard from '@/components/ImageCard';
 import { ImageType, Category, Tag } from '@/types';
 import Link from 'next/link';
+import { ReadonlyURLSearchParams } from 'next/navigation';
 
 const PER_PAGE = 60;
 const API_LIMIT = 100;
 
-export default function ClientPage() {
-  const searchParams = useSearchParams();
+type Props = {
+  searchParams: ReadonlyURLSearchParams;
+};
+
+export default function ClientPage({ searchParams }: Props) {
   const page = Number(searchParams.get('page') || '1');
   const category = searchParams.get('category') || '';
   const tagParams = searchParams.getAll('tags');

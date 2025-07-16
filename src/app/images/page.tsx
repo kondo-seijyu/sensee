@@ -1,9 +1,10 @@
-'use client';
-
-import { useSearchParams } from 'next/navigation';
+import { ReadonlyURLSearchParams } from 'next/navigation';
 import ClientPage from './ClientPage';
 
-export default function ImagePageWrapper() {
-  const searchParams = useSearchParams();
-  return <ClientPage key={searchParams.toString()} />;
+type Props = {
+  searchParams: ReadonlyURLSearchParams;
+};
+
+export default function ImagePageWrapper({ searchParams }: Props) {
+  return <ClientPage key={searchParams.toString()} searchParams={searchParams} />;
 }
