@@ -27,6 +27,7 @@ export default async function CategoryPage({
     queries: { filters: `category[equals]${id}` },
   });
 
+
   return (
     <main className="p-8">
       <h1 className="text-xl font-bold mb-4">カテゴリ: {category.name}</h1>
