@@ -1,9 +1,12 @@
 import ClientPage from './ClientPage';
 
-export default async function Page(propsPromise: Promise<{ searchParams: Record<string, string | string[]> }>) {
-  const { searchParams } = await propsPromise;
+export default async function Page(
+  props: Promise<{ searchParams: Record<string, string | string[]> }>
+) {
+  const { searchParams } = await props;
 
   const urlSearchParams = new URLSearchParams();
+
   for (const key in searchParams) {
     const val = searchParams[key];
     if (Array.isArray(val)) {
