@@ -16,19 +16,12 @@ type ImageType = {
 
 type LooseParams = Record<string, unknown>;
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error: Vercelビルド時、paramsがPromise扱いで型衝突するため抑制
 export default async function CategoryPage({
   params,
 }: {
-  params?: LooseParams;
+  params: Promise<{ id: string }>;
 }) {
-  const maybeId = params?.id;
-  const id = typeof maybeId === 'string' ? maybeId : undefined;
-
-  if (!id) {
-    return <main className="p-8">カテゴリIDが指定されていません。</main>;
-  }
+  const { id } = await params;
 
   const category = await client.get({ endpoint: 'categories', contentId: id });
   const data = await client.get({
