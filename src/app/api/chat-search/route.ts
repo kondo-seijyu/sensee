@@ -21,11 +21,12 @@ export async function POST(request: Request) {
     const question: string = body.question;
 
     function sanitizeForPrompt(text: string): string {
-      return text
-        .normalize('NFKC')
-        .replace(/[\u0300-\u036f]/g, '')
-        .replace(/[\u200B-\u200D\uFEFF]/g, '')
-        .replace(/[^\x00-\x7F]+/g, ' ');
+      return Array.from(text)
+        .map((ch) => {
+          const code = ch.charCodeAt(0);
+          return code <= 255 ? ch : ' ';
+        })
+        .join('');
     }
 
     const safeQuestion = sanitizeForPrompt(question);
