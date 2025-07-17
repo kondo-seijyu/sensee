@@ -35,7 +35,7 @@ export default function ImageCard({ item }: { item: ImageCardProps["item"] }) {
             className="object-cover w-full h-auto hover:opacity-80 transition"
             priority
             placeholder="blur"
-            blurDataURL="/placeholder.png"
+            blurDataURL="/images/placeholder.png"
           />
         ) : (
           <div className="w-full aspect-[4/3] bg-gray-100 flex items-center justify-center text-xs text-gray-400">
