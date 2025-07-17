@@ -26,11 +26,11 @@ export async function POST(request: Request) {
     const tagList = tags.map((t) => t.tag);
     const tagIdMap = Object.fromEntries(tags.map((t) => [t.tag, t.id]));
 
-    const prompt = `以下はユーザーの質問です。この内容に関連しそうなタグを最大3つ選び、それぞれに0〜1のscoreをつけてJSON形式で返してください。
+const prompt = `以下はユーザーの質問です。この内容に関連しそうなタグを最大3つ選び、それぞれに0~1のscoreをつけてJSON形式で返してください。
 スコアは「そのタグがどれだけ関係しそうか」を表してください。
-※関係ないタグ（スコア0.5未満）は含めないようにしてください。
+※関係ないタグ（スコア0.5未満）は含めないでください。
 
-質問: 「${question}」
+質問: "${question}"
 タグ一覧: ${JSON.stringify(tagList)}
 
 出力例:
