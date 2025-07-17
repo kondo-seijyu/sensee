@@ -30,7 +30,7 @@ export default function ClientPage() {
   const page = Number(searchParams.get('page') || '1');
   const category = searchParams.get('category') || '';
   const tagParams = searchParams.getAll('tags');
-
+  const search = searchParams.get('search') || '';
   const [images, setImages] = useState<ImageType[]>([]);
   const [totalCount, setTotalCount] = useState(0);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -46,11 +46,17 @@ export default function ClientPage() {
       const filters: string[] = [];
       if (category) filters.push(`category[equals]${category}`);
       tagParams.forEach(tag => filters.push(`tags[contains]${tag}`));
+      if (search) {
+        filters.push(
+          `(title[contains]${search}[or]description[contains]${search}[or]category[contains]${search})`
+        );
+      }
+
       const filterString = filters.length > 0 ? filters.join('[and]') : undefined;
 
-//       if (filterString && process.env.NODE_ENV === 'development') {
-//   console.log('🧪 MicroCMS filters:', encodeURIComponent(filterString));
-// }
+      //       if (filterString && process.env.NODE_ENV === 'development') {
+      //   console.log('🧪 MicroCMS filters:', encodeURIComponent(filterString));
+      // }
 
       const [catData, tagData, imgData] = await Promise.all([
         client.get({ endpoint: 'categories', queries: { limit: API_LIMIT } }),
@@ -85,7 +91,7 @@ export default function ClientPage() {
     };
 
     fetchData();
-}, [category, page, offset, tagParams.join(',')]);
+  }, [category, page, offset, tagParams.join(','), search]);
 
   const totalPages = Math.ceil(totalCount / PER_PAGE);
 

@@ -7,6 +7,13 @@ import Image from 'next/image';
 import { ImageType, Tag, Category } from '@/types';
 
 export default function HomePage() {
+  const [keyword, setKeyword] = useState('');
+
+  const handleSearch = () => {
+    if (keyword.trim()) {
+      window.location.href = `/images?search=${encodeURIComponent(keyword)}`;
+    }
+  };
   const [data, setData] = useState<ImageType[]>([]);
   const [seasonalData, setSeasonalData] = useState<ImageType[]>([]);
   const [rankingData, setRankingData] = useState<ImageType[]>([]);
@@ -120,7 +127,18 @@ export default function HomePage() {
             type="text"
             placeholder="検索キーワードを入力"
             className="bg-transparent flex-1 focus:outline-none"
+            value={keyword}
+            onChange={(e) => setKeyword(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') handleSearch();
+            }}
           />
+          <button
+            onClick={handleSearch}
+            className="ml-2 bg-blue-500 text-white text-sm px-3 py-1 rounded hover:bg-blue-600 transition"
+          >
+            検索
+          </button>
         </div>
 
         <section className="おすすめタグ">
