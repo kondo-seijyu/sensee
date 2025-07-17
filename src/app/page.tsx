@@ -121,21 +121,23 @@ export default function HomePage() {
         </div>
 
         {/* 検索ボックス */}
-        <div className="bg-gray-100 flex items-center justify-center max-w-xl mx-auto rounded-full px-4 py-3 shadow-sm">
-          <span className="text-gray-400 mr-2">🔍</span>
-          <input
-            type="text"
-            placeholder="検索キーワードを入力"
-            className="bg-transparent flex-1 focus:outline-none"
-            value={keyword}
-            onChange={(e) => setKeyword(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') handleSearch();
-            }}
-          />
+        <div className="flex w-full max-w-xl mx-auto mt-6">
+          <div className="relative flex-grow">
+            <span className="absolute inset-y-0 left-3 flex items-center text-gray-400">
+              🔍
+            </span>
+            <input
+              type="text"
+              placeholder="検索キーワードを入力"
+              className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-l-full focus:outline-none"
+              value={keyword}
+              onChange={(e) => setKeyword(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+            />
+          </div>
           <button
             onClick={handleSearch}
-            className="ml-2 bg-blue-500 text-white text-sm px-3 py-1 rounded hover:bg-blue-600 transition"
+            className="px-4 py-2 bg-blue-500 text-white text-sm rounded-r-full hover:bg-blue-600 transition"
           >
             検索
           </button>
