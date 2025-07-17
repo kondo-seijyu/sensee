@@ -137,7 +137,7 @@ export default function HomePage() {
           </div>
           <button
             onClick={handleSearch}
-            className="px-4 py-[10px] bg-blue-500 text-white text-sm rounded-r-full hover:bg-blue-600 transition"
+            className="w-24 h-full bg-blue-500 text-white text-sm rounded-r-fullhover:bg-blue-600 transition"
           >
             検索
           </button>
