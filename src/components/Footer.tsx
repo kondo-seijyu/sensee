@@ -26,7 +26,7 @@ export default function Footer() {
     <footer className="bg-gray-50 border-t mt-12 text-sm text-gray-600">
       <div className="max-w-[1040px] mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-3 gap-6">
         <div>
-          <Image src="/logo.png" alt="ロゴ" width={120} height={40} className="mb-2 min-w-[120px]" />
+          <Image src="/images/logo.png" alt="ロゴ" width={120} height={40} className="mb-2 min-w-[120px]" />
           <p className="text-sm leading-relaxed">
             Sensee（センシー）は、先生の「見せたい」をやさしく支える画像素材サービスです。
           </p>
