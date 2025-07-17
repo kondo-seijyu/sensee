@@ -20,7 +20,15 @@ export async function POST(request: Request) {
     const body = await request.json();
     const question: string = body.question;
 
-    const safeQuestion = Buffer.from(question, 'utf-8').toString('utf-8');
+    function sanitizeForPrompt(text: string): string {
+      return text
+        .normalize('NFKC')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[\u200B-\u200D\uFEFF]/g, '')
+        .replace(/[^\x00-\x7F]+/g, ' ');
+    }
+
+    const safeQuestion = sanitizeForPrompt(question);
 
     const tagMaster = await client.get({ endpoint: 'tags', queries: { limit: 100 } });
     const tags = tagMaster.contents as TagItem[];
