@@ -23,7 +23,6 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // 管理者宛メール
     await transporter.sendMail({
       from: `"画像リクエストフォーム" <${process.env.SMTP_USER}>`,
       to: process.env.TARGET_EMAIL!,
@@ -52,7 +51,6 @@ ${safePurpose}
       `.trim(),
     });
 
-    // 自動返信メール（メールアドレス入力時のみ）
     if (email && email.includes('@')) {
       await transporter.sendMail({
         from: `"Sensee運営" <${process.env.SMTP_USER}>`,

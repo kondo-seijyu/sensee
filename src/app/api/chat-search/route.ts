@@ -19,7 +19,6 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const question: string = body.question;
-    console.log('🧠 ユーザー質問:', question);
 
     const tagMaster = await client.get({ endpoint: 'tags', queries: { limit: 100 } });
     const tags = tagMaster.contents as TagItem[];

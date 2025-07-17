@@ -6,7 +6,6 @@ import Link from 'next/link';
 
 import type { ImageType } from '@/types';
 
-// Message型に明確な型を指定
 interface UserMessage {
   role: 'user';
   text: string;

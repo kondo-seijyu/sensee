@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { client } from '@/libs/client';
 import CategoryList from '@/components/CategoryList';
 import ImageCard from '@/components/ImageCard';
@@ -9,6 +10,7 @@ import Link from 'next/link';
 
 const PER_PAGE = 60;
 const API_LIMIT = 100;
+
 const buildSearchParams = (params: Record<string, string | string[]>) => {
   const q = new URLSearchParams();
   for (const key in params) {
@@ -22,15 +24,13 @@ const buildSearchParams = (params: Record<string, string | string[]>) => {
   return q;
 };
 
-type Props = {
-  searchParams: Record<string, string | string[]>;
-};
+export default function ClientPage() {
+  const searchParams = useSearchParams();
 
-export default function ClientPage({ searchParams }: Props) {
-  const q = buildSearchParams(searchParams);
-  const page = Number(q.get('page') || '1');
-  const category = q.get('category') || '';
-  const tagParams = q.getAll('tags');
+  const page = Number(searchParams.get('page') || '1');
+  const category = searchParams.get('category') || '';
+  const tagParams = searchParams.getAll('tags');
+
   const [images, setImages] = useState<ImageType[]>([]);
   const [totalCount, setTotalCount] = useState(0);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -48,9 +48,9 @@ export default function ClientPage({ searchParams }: Props) {
       tagParams.forEach(tag => filters.push(`tags[contains]${tag}`));
       const filterString = filters.length > 0 ? filters.join('[and]') : undefined;
 
-      if (filterString && process.env.NODE_ENV === 'development') {
-        console.log('🧪 MicroCMS filters:', encodeURIComponent(filterString));
-      }
+//       if (filterString && process.env.NODE_ENV === 'development') {
+//   console.log('🧪 MicroCMS filters:', encodeURIComponent(filterString));
+// }
 
       const [catData, tagData, imgData] = await Promise.all([
         client.get({ endpoint: 'categories', queries: { limit: API_LIMIT } }),
@@ -85,37 +85,38 @@ export default function ClientPage({ searchParams }: Props) {
     };
 
     fetchData();
-  }, [category, tagParams, page, offset]);
+}, [category, page, offset, tagParams.join(',')]);
 
   const totalPages = Math.ceil(totalCount / PER_PAGE);
 
- const buildTagQuery = (tagId: string) => {
-  const q = buildSearchParams(searchParams);
-  const updated = tagParams.includes(tagId)
-    ? tagParams.filter(t => t !== tagId)
-    : [...tagParams, tagId];
+  const buildTagQuery = (tagId: string) => {
+    const q = buildSearchParams({});
+    const updated = tagParams.includes(tagId)
+      ? tagParams.filter(t => t !== tagId)
+      : [...tagParams, tagId];
 
-  q.delete('tags');
-  updated.forEach(t => q.append('tags', t));
-  if (page > 1) q.set('page', page.toString());
-  else q.delete('page');
+    updated.forEach(t => q.append('tags', t));
+    if (category) q.set('category', category);
+    if (page > 1) q.set('page', page.toString());
 
-  return `/images?${q.toString()}`;
-};
+    return `/images?${q.toString()}`;
+  };
 
-const buildPageQuery = (pn: number) => {
-  const q = buildSearchParams(searchParams);
-  if (pn > 1) q.set('page', pn.toString());
-  else q.delete('page');
+  const buildPageQuery = (pn: number) => {
+    const q = buildSearchParams({});
+    if (pn > 1) q.set('page', pn.toString());
+    if (category) q.set('category', category);
+    tagParams.forEach(t => q.append('tags', t));
 
-  return `/images?${q.toString()}`;
-};
+    return `/images?${q.toString()}`;
+  };
 
-const clearTagsQuery = () => {
-  const q = buildSearchParams(searchParams);
-  q.delete('tags');
-  return `/images?${q.toString()}`;
-};
+  const clearTagsQuery = () => {
+    const q = buildSearchParams({});
+    if (category) q.set('category', category);
+    if (page > 1) q.set('page', page.toString());
+    return `/images?${q.toString()}`;
+  };
 
   return (
     <main className="max-w-[1040px] mx-auto px-4 py-16 space-y-10 font-sans">
@@ -164,7 +165,11 @@ const clearTagsQuery = () => {
             <p>読み込み中...</p>
           </div>
         ) : (
-          images.map(item => <ImageCard key={item.id} item={item} />)
+          <>
+            {images.map(item => (
+              <ImageCard key={item.id} item={item} />
+            ))}
+          </>
         )}
       </div>
 

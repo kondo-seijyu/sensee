@@ -22,7 +22,6 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // 管理者宛メール
     await transporter.sendMail({
       from: `"お問い合わせフォーム" <${process.env.SMTP_USER}>`,
       to: process.env.TARGET_EMAIL!,
@@ -51,7 +50,6 @@ ${message}
       `.trim(),
     });
 
-    // 自動返信メール（ユーザー宛）
     await transporter.sendMail({
       from: `"Sensee運営" <${process.env.SMTP_USER}>`,
       to: email,

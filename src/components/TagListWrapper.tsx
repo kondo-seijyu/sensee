@@ -20,13 +20,11 @@ export default function TagListWrapper({
   const [filteredImages, setFilteredImages] = useState<ImageType[]>([]);
   const [filteredTags, setFilteredTags] = useState<Tag[]>(tags);
 
-  // 初回選択タグ反映
   useEffect(() => {
     const matched = tags.filter((tag) => initialSelectedTagIds.includes(tag.id));
     setSelectedTags(matched);
   }, [initialSelectedTagIds, tags]);
 
-  // タグ変更時の画像・タグフィルタリング
   useEffect(() => {
     if (selectedTags.length === 0) {
       setFilteredImages(images);
