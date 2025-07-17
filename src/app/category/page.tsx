@@ -38,7 +38,7 @@ export default async function CategoryPage() {
             return (
               <Link
                 key={cat.id}
-                href={`/category/${cat.id}`}
+                href={`/images?category=${cat.id}`}
                 className="border rounded-xl p-4 flex flex-col items-center hover:shadow transition"
               >
                 {thumb ? (

@@ -99,7 +99,7 @@ export default function HomePage() {
           {categories.map((cat) => (
             <Link
               key={cat.id}
-              href={`/category/${cat.id}`}
+              href={`/images?category=${cat.id}`}
               className="bg-[#F6F4EB] text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-[#A7D8DE] /30 transition"
             >
               {cat.name}
