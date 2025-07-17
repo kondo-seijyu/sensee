@@ -20,7 +20,7 @@ export default function Header() {
     <header className="bg-white shadow sticky top-0 z-50">
       <div className="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center">
         <Link href="/" className="flex items-center">
-          <Image src="/images/logo.png" alt="Senseeロゴ" width={100} height={40} priority />
+          <Image src="/images/logo.webp" alt="Senseeロゴ" width={100} height={40} priority />
         </Link>
 
         <button
@@ -48,7 +48,7 @@ export default function Header() {
         <div className="fixed inset-0 bg-white z-40 flex flex-col items-center justify-center text-lg space-y-4 md:hidden">
           <div className="absolute top-4 left-4">
             <Link href="/" onClick={() => setIsOpen(false)}>
-              <Image src="/images/logo.png" alt="Senseeロゴ" width={100} height={40} />
+              <Image src="/images/logo.webp" alt="Senseeロゴ" width={100} height={40} />
             </Link>
           </div>
           <button

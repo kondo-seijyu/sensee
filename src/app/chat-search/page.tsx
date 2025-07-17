@@ -107,7 +107,7 @@ export default function ChatSearchPage() {
               {msg.role === 'bot' && (
                 <div className="flex items-center gap-2 text-sm text-gray-500">
                   <Image
-                    src="/images/sensee_icon.png"
+                    src="/images/sensee_icon.webp"
                     alt="センシーくん"
                     width={20}
                     height={20}

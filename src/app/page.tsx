@@ -88,7 +88,7 @@ export default function HomePage() {
         <h1 className="sr-only">Sensee</h1>
         <div className="mb-6">
           <Image
-            src="/images/logo.png"
+            src="/images/logo.webp"
             alt="Sensee"
             width={240}
             height={80}
