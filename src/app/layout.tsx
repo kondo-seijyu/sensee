@@ -17,7 +17,7 @@ export const metadata = {
     siteName: 'Sensee',
     images: [
       {
-        url: 'https://sensee.site/logo.png',
+        url: 'https://sensee.site/images/logo.png',
         width: 1200,
         height: 630,
       },
