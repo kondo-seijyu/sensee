@@ -121,16 +121,15 @@ export default function HomePage() {
         </div>
 
         {/* 検索ボックス */}
-        <div className="flex w-full max-w-xl mx-auto mt-6">
+        <div className="flex w-full max-w-xl mx-auto mt-6 h-11">
           <div className="relative flex-grow">
-            {/* アイコン：中央寄せしつつ上下位置に少し余裕を */}
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg">
+            <span className="absolute left-3 inset-y-0 my-auto flex items-center text-gray-400 text-lg">
               🔍
             </span>
             <input
               type="text"
               placeholder="検索キーワードを入力"
-              className="w-full pl-10 pr-3 py-[10px] border border-gray-300 rounded-l-full text-sm focus:outline-none"
+              className="w-full h-full pl-10 pr-3 border border-gray-300 rounded-l-full text-sm focus:outline-none"
               value={keyword}
               onChange={(e) => setKeyword(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
