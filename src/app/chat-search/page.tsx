@@ -42,20 +42,25 @@ export default function ChatSearchPage() {
     setLoading(true);
 
     try {
-      const res = await fetch('/api/chat-search', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_GPTGATE_URL}/chat-tag-search`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-shared-secret': process.env.NEXT_PUBLIC_SHARED_SECRET!,
+        },
         body: JSON.stringify({ question: input }),
       });
 
       const data = await res.json();
+      const content = data.reply ?? '返答がありませんでした。';
+      const images = data.images ?? [];
 
       setMessages((prev) => [
         ...prev,
         {
           role: 'bot',
-          text: data.reply || 'おすすめの画像を見つけました！画像をクリックすると詳細ページにいくよ♪',
-          images: data.images || [],
+          text: content,
+          images,
         },
       ]);
     } catch (error) {
