@@ -40,7 +40,6 @@ export default function ChatSearchPage() {
 
     setMessages((prev) => [...prev, { role: 'user', text: input }]);
     setLoading(true);
-
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_GPTGATE_URL}/chat-tag-search`, {
         method: 'POST',
